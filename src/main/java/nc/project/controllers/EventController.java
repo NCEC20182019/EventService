@@ -1,7 +1,7 @@
-package nc.project.controller;
+package nc.project.controllers;
 
-import nc.project.Event;
-import nc.project.service.EventService;
+import nc.project.models.Event;
+import nc.project.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

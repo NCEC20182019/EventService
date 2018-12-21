@@ -1,6 +1,6 @@
-package nc.project.service;
+package nc.project.services;
 
-import nc.project.Event;
+import nc.project.models.Event;
 
 public interface EventService {
     Event getEvent(int eventId);
