@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>nc.project</groupId>
-    <artifactId>event-service</artifactId>
+    <artifactId>EventService</artifactId>
     <version>1.0</version>
 
         <parent>
@@ -43,5 +43,4 @@
                 </plugin>
             </plugins>
         </build>
-
 </project>

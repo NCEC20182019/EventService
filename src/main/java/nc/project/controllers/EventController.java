@@ -25,4 +25,11 @@ public class EventController {
         return eventService.getEvent(eventId);
     }
 
+    // swagger config
+    // один endpoint
+        // create    put; response 200 OK and id into response-body
+        // getById   get
+        // delete    delete
+
+    // getAll
 }
