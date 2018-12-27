@@ -3,27 +3,26 @@ package nc.project.models;
 import javax.persistence.*;
 import java.io.Serializable;
 
-//@Entity
-//@Table(name="Event_localization")
+@Entity
+@Table(name="Event_localization")
 //@IdClass(LocalizationKey.class)
-public class Localization {
+public class Localization implements Serializable{
 
     public Localization() {
     }
 
     public Localization(LocalizationKey lkey) {
-        event_id = lkey.getEvent_id();
-        lang_id = lkey.getLang_id();
+        this.lkey = lkey;
     }
-    @Id
-    @AttributeOverrides({
+    @EmbeddedId
+    private LocalizationKey lkey;
+    /*@AttributeOverrides({
         @AttributeOverride(name = "lang_id",
         column = @Column(name = "lang_id")),
         @AttributeOverride(name = "event_id",
         column = @Column(name = "event_id"))
     })
-    private String lang_id;
-    private int event_id;
+    private String lang_id;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id",insertable = false, updatable=false)
@@ -54,5 +53,9 @@ public class Localization {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public LocalizationKey getLkey() {
+        return lkey;
     }
 }

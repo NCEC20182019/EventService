@@ -23,8 +23,8 @@ public class Event {
   @JoinColumn(name = "location_id")
   private Location location;
 
-  //@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-  //private List<Localization> localizations;
+  @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Localization> localizations;
 
   public Event() {
   }
@@ -37,14 +37,14 @@ public class Event {
       this.source_uri = source_uri;
   }
 
-  /*public void addLocalization(Localization localization){
+  public void addLocalization(Localization localization){
     localization.setEvent(this);
     localizations.add(localization);
   }
 
   public void removeEvent(Localization localization){
     localizations.remove(localization);
-  }*/
+  }
 
   public int getId() {
       return id;
