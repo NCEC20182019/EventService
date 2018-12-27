@@ -22,10 +22,6 @@ public class Location {
     private List<Event> events;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id")
-    private Country country;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private City city;
 
@@ -92,14 +88,6 @@ public class Location {
 
     public void setEvents(List<Event> events) {
         this.events = events;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
     }
 
     public City getCity() {

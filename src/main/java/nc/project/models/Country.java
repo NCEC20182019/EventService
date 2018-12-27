@@ -13,8 +13,8 @@ public class Country {
     @Column(name = "country_name")
     private String name;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Location> locations;
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Region> regions;
 
     public Country(){
     }
@@ -23,13 +23,12 @@ public class Country {
         this.name = name;
     }
 
-    public void addLocation(Location location){
-        location.setCountry(this);
-        locations.add(location);
+    public void addLocation(Region region){
+        region.setCountry(this);
+        regions.add(region);
     }
 
-    public void removeLocation(Location location){
-        locations.remove(location);
+    public void removeLocation(Region region){regions.remove(region);
     }
 
     public String getId() {
@@ -48,11 +47,11 @@ public class Country {
         this.name = name;
     }
 
-    public List<Location> getLocations() {
-        return locations;
+    public List<Region> getRegions() {
+        return regions;
     }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
+    public void setRegions(List<Region> regions) {
+        this.regions = regions;
     }
 }

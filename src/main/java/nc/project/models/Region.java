@@ -17,6 +17,10 @@ public class Region {
     @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<City> cities;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
+    private Country country;
+
     public void addCity(City city){
         city.setRegion(this);
         cities.add(city);
@@ -36,6 +40,14 @@ public class Region {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public List<City> getCities() {
