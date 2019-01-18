@@ -2,6 +2,7 @@ package nc.project.models;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class LocalizationKey implements Serializable {
@@ -30,5 +31,19 @@ public class LocalizationKey implements Serializable {
 
   public void setEvent_id(int event_id) {
     this.event_id = event_id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    LocalizationKey that = (LocalizationKey) o;
+    return event_id == that.event_id &&
+            Objects.equals(lang_id, that.lang_id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(lang_id, event_id);
   }
 }

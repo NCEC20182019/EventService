@@ -3,6 +3,7 @@ package nc.project.models;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Locations")
@@ -12,11 +13,13 @@ public class Location {
     @Column(name ="location_id")
     private int id;
 
+    private String name;
     private double latitude;
     private double longitude;
 
     private String street_address;
     private String postal_code;
+    private String url;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events;
@@ -28,12 +31,23 @@ public class Location {
     public Location(){
     }
 
-    public Location(double latitude, double longitude, String street_address,
-                    String postal_code){
+    public Location(String name, double latitude, double longitude, String street_address,
+                    String postal_code,String url){
+        this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.street_address = street_address;
         this.postal_code = postal_code;
+        this.url = url;
+        events = new ArrayList<>();
+    }
+    public Location(String name, String url){
+        this.name = name;
+        this.latitude = 0;
+        this.longitude = 0;
+        this.street_address = null;
+        this.postal_code = null;
+        this.url = url;
         events = new ArrayList<>();
     }
 
@@ -96,5 +110,35 @@ public class Location {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return Objects.equals(name, location.name) &&
+                Objects.equals(url, location.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, url);
     }
 }

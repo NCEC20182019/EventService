@@ -1,11 +1,13 @@
 package nc.project.services;
 
 import nc.project.models.Event;
+import nc.project.models.Location;
 import nc.project.repository.EventRepository;
-import nc.project.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -14,20 +16,30 @@ public class EventServiceImpl implements EventService{
     @Autowired
     private EventRepository eventRepo;
     @Autowired
-    private LocationRepository locationRepo;
+    LocationService locService;
 
-    @Override
     public Event getById(int eventId) {
-        return null; //new Event("Test_event");;
+        return eventRepo.findById(eventId);
     }
 
-    @Override
+
     public List<Event> getAll() {
-        return null; // eventRepo.findAll();
+        List<Event> list = new ArrayList<>();
+        eventRepo.findAll().forEach(list::add);
+        return list;
     }
 
-    @Override
-    public void createEvent() {
 
+    public Event createEvent(String title, String description, Date date_start,
+                            Date date_end, String source_uri, Location location) {
+        Event newEvent = new Event(title,description,date_start,date_end,source_uri);
+
+
+        if (!locService.isLocationExist(location))
+            locService.createLocation(location);
+
+        newEvent.setLocation(location);
+
+        return eventRepo.save(newEvent);
     }
 }
