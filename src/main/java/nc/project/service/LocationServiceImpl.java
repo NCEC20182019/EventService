@@ -1,6 +1,6 @@
-package nc.project.services;
+package nc.project.service;
 
-import nc.project.models.Location;
+import nc.project.model.Location;
 import nc.project.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

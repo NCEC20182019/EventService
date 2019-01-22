@@ -1,4 +1,4 @@
-package nc.project.models;
+package nc.project.model;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

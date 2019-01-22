@@ -1,6 +1,6 @@
-package nc.project.services;
+package nc.project.service;
 
-import nc.project.models.Location;
+import nc.project.model.Location;
 
 import java.util.List;
 

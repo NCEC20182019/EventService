@@ -1,14 +1,15 @@
-package nc.project.models;
+package nc.project.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Events")
+@Table(name = "events")
 public class Event {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "event_id")
   private int id;
 
@@ -35,6 +36,7 @@ public class Event {
       this.date_start = date_start;
       this.date_end = date_end;
       this.source_uri = source_uri;
+      localizations = new ArrayList<>();
   }
 
   public void addLocalization(Localization localization){
@@ -42,7 +44,7 @@ public class Event {
     localizations.add(localization);
   }
 
-  public void removeEvent(Localization localization){
+  public void removeLocalization(Localization localization){
     localizations.remove(localization);
   }
 
@@ -97,4 +99,12 @@ public class Event {
   public void setLocation(Location location) {
       this.location = location;
   }
+
+  public List<Localization> getLocalizations() {
+      return localizations;
+  }
+
+  public void setLocalizations(List<Localization> localizations) {
+        this.localizations = localizations;
+    }
 }

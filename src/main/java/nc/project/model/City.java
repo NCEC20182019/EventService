@@ -1,13 +1,14 @@
-package nc.project.models;
+package nc.project.model;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Cities")
+@Table(name = "cities")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="city_id")
     private int id;
 
     @Column(name ="city_name")

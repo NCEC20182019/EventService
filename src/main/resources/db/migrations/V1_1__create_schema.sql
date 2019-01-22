@@ -1,84 +1,84 @@
-CREATE TABLE "Events" (
+CREATE TABLE "events" (
 	"event_id" serial NOT NULL,
 	"title" varchar(200) NOT NULL,
 	"description" varchar(1500) NOT NULL,
 	"date_start" timestamptz NOT NULL,
 	"date_end" timestamptz NOT NULL,
-	"source_uri" varchar(300) NOT NULL,
+	"source_uri" varchar(300),
 	"location_id" int NOT NULL,
-	CONSTRAINT Events_pk PRIMARY KEY ("event_id")
+	CONSTRAINT events_pk PRIMARY KEY ("event_id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "Event_localization" (
+CREATE TABLE "event_localization" (
 	"lang_id" varchar(2) NOT NULL,
 	"event_id" integer NOT NULL,
 	"translated_title" varchar(200) NOT NULL,
 	"translated_description" varchar(1500) NOT NULL,
-	CONSTRAINT Event_localization_pk PRIMARY KEY ("lang_id","event_id")
+	CONSTRAINT event_localization_pk PRIMARY KEY ("lang_id","event_id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "Locations" (
+CREATE TABLE "locations" (
 	"location_id" serial NOT NULL,
 	"latitude" numeric,
 	"longitude" numeric,
-	"street_address" varchar(40) NOT NULL,
-	"postal_code" varchar(20) NOT NULL,
-	"city_id" int NOT NULL,
-	CONSTRAINT Locations_pk PRIMARY KEY ("location_id")
+	"street_address" varchar(40),
+	"postal_code" varchar(20),
+	"city_id" int,
+	CONSTRAINT locations_pk PRIMARY KEY ("location_id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "Countries" (
+CREATE TABLE "countries" (
 	"country_id" varchar(2) NOT NULL,
 	"country_name" varchar(40) NOT NULL,
-	CONSTRAINT Countries_pk PRIMARY KEY ("country_id")
+	CONSTRAINT countries_pk PRIMARY KEY ("country_id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "Cities" (
+CREATE TABLE "cities" (
 	"city_id" serial NOT NULL,
 	"city_name" varchar(60) NOT NULL,
 	"region_id" int,
-	CONSTRAINT Cities_pk PRIMARY KEY ("city_id")
+	CONSTRAINT cities_pk PRIMARY KEY ("city_id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "Regions" (
+CREATE TABLE "regions" (
 	"region_id" serial NOT NULL,
 	"region_name" varchar(60) NOT NULL,
 	"country_id" varchar(2) NOT NULL,
-	CONSTRAINT Regions_pk PRIMARY KEY ("region_id")
+	CONSTRAINT regions_pk PRIMARY KEY ("region_id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-ALTER TABLE "Events" ADD CONSTRAINT "Events_fk0" FOREIGN KEY ("location_id") REFERENCES "Locations"("location_id");
+ALTER TABLE "events" ADD CONSTRAINT "events_fk0" FOREIGN KEY ("location_id") REFERENCES "locations"("location_id");
 
-ALTER TABLE "Event_localization" ADD CONSTRAINT "Event_localization_fk0" FOREIGN KEY ("event_id") REFERENCES "Events"("event_id");
+ALTER TABLE "event_localization" ADD CONSTRAINT "event_localization_fk0" FOREIGN KEY ("event_id") REFERENCES "events"("event_id");
 
-ALTER TABLE "Locations" ADD CONSTRAINT "Locations_fk0" FOREIGN KEY ("city_id") REFERENCES "Cities"("city_id");
+ALTER TABLE "locations" ADD CONSTRAINT "locations_fk0" FOREIGN KEY ("city_id") REFERENCES "cities"("city_id");
 
 
-ALTER TABLE "Cities" ADD CONSTRAINT "Cities_fk0" FOREIGN KEY ("region_id") REFERENCES "Regions"("region_id");
+ALTER TABLE "cities" ADD CONSTRAINT "cities_fk0" FOREIGN KEY ("region_id") REFERENCES "regions"("region_id");
 
-ALTER TABLE "Regions" ADD CONSTRAINT "Regions_fk0" FOREIGN KEY ("country_id") REFERENCES "Countries"("country_id");
+ALTER TABLE "regions" ADD CONSTRAINT "regions_fk0" FOREIGN KEY ("country_id") REFERENCES "countries"("country_id");
 

@@ -1,4 +1,4 @@
-package nc.project.models;
+package nc.project.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Locations")
+@Table(name = "locations")
 public class Location {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="location_id")
     private int id;
 

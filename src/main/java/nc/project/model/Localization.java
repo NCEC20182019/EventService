@@ -1,10 +1,12 @@
-package nc.project.models;
+package nc.project.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="Event_localization")
+@Table(name="event_localization")
 //@IdClass(LocalizationKey.class)
 public class Localization implements Serializable{
 
@@ -26,6 +28,7 @@ public class Localization implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id",insertable = false, updatable=false)
+    @JsonIgnore
     private Event event;
 
     private String translated_title;

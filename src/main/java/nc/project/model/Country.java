@@ -1,10 +1,10 @@
-package nc.project.models;
+package nc.project.model;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Counties")
+@Table(name = "counties")
 public class Country {
     @Id
     @Column(name = "country_id")

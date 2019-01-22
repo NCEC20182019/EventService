@@ -1,6 +1,6 @@
 package nc.project.repository;
 
-import nc.project.models.Location;
+import nc.project.model.Location;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

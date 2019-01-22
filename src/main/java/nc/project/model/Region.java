@@ -1,10 +1,10 @@
-package nc.project.models;
+package nc.project.model;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Regions")
+@Table(name = "regions")
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
