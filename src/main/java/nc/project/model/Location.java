@@ -19,7 +19,6 @@ public class Location {
 
     private String street_address;
     private String postal_code;
-    private String url;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events;
@@ -32,22 +31,20 @@ public class Location {
     }
 
     public Location(String name, double latitude, double longitude, String street_address,
-                    String postal_code,String url){
+                    String postal_code){
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.street_address = street_address;
         this.postal_code = postal_code;
-        this.url = url;
         events = new ArrayList<>();
     }
-    public Location(String name, String url){
+    public Location(String name){
         this.name = name;
         this.latitude = 0;
         this.longitude = 0;
         this.street_address = null;
         this.postal_code = null;
-        this.url = url;
         events = new ArrayList<>();
     }
 
@@ -112,14 +109,6 @@ public class Location {
         this.city = city;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getName() {
         return name;
     }
@@ -133,12 +122,13 @@ public class Location {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return Objects.equals(name, location.name) &&
-                Objects.equals(url, location.url);
+        return Double.compare(location.latitude, latitude) == 0 &&
+                Double.compare(location.longitude, longitude) == 0 &&
+                Objects.equals(name, location.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, url);
+        return Objects.hash(name, latitude, longitude);
     }
 }

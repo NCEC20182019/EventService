@@ -11,7 +11,6 @@ import nc.project.model.dto.EventGetDTO;
 import nc.project.service.EventService;
 import nc.project.service.LocationService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +32,11 @@ public class EventController {
         this.eventService = eventService;
         this.locationService = locationService;
     }
-    private PropertyMap<Event, EventCreateDTO> skipFieldsMap = new PropertyMap<Event, EventCreateDTO>() {
+    /*private PropertyMap<Event, EventCreateDTO> skipFieldsMap = new PropertyMap<Event, EventCreateDTO>() {
         protected void configure() {
             skip().getName_location();
-            skip().getUrl_to_location();
         }
-    };
+    };*/
 
     @ApiOperation(value = "get all events", response = EventGetDTO.class, responseContainer = "List")
     @ApiResponses(value = {
@@ -70,18 +68,20 @@ public class EventController {
 
         //modelMapper.addMappings(skipFieldsMap);
 
-        Location location = new Location(newEvent.getName_location(),newEvent.getUrl_to_location());
+        Location location = new Location(newEvent.getName_location());
 
         eventService.createEvent(modelMapper.map(newEvent,Event.class),location);
     }
 
     @PutMapping(value = "/{eventId:\\d+}")
-    public String updateEvent(@PathVariable int eventId) {
-        return "";
+    public void updateEvent(@PathVariable int eventId,@RequestBody EventCreateDTO updatedEvent) {
+        Location location = new Location(updatedEvent.getName_location());
+
+        eventService.updateEvent(eventId, modelMapper.map(updatedEvent,Event.class),location);
     }
 
     @DeleteMapping(value = "/{eventId:\\d+}")
-    public String deleteEvent(@PathVariable int eventId) {
-        return "";
+    public void deleteEvent(@PathVariable int eventId) {
+        eventService.deleteEvent(eventId);
     }
 }

@@ -9,7 +9,6 @@ public class LocationGetDTO {
 
     private String street_address;
     private String postal_code;
-    private String url;
     private CityGetDTO city;
 
     public int getId() {
@@ -58,14 +57,6 @@ public class LocationGetDTO {
 
     public void setPostal_code(String postal_code) {
         this.postal_code = postal_code;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public CityGetDTO getCity() {

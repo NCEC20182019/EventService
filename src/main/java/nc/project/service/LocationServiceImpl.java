@@ -24,13 +24,13 @@ public class LocationServiceImpl implements LocationService {
 
   @Override
   public void createLocation(String name, double latitude, double longitude, String street_address,
-                             String postal_code,String url) {
-    locationRepo.save(new Location(name, latitude, longitude, street_address, postal_code, url));
+                             String postal_code) {
+    locationRepo.save(new Location(name, latitude, longitude, street_address, postal_code));
   }
 
   @Override
-  public void createLocation(Location location) {
-    locationRepo.save(location);
+  public Location createLocation(Location location) {
+    return locationRepo.save(location);
   }
 
   @Override
@@ -40,5 +40,23 @@ public class LocationServiceImpl implements LocationService {
       if(loc.equals(location))
         return true;
     return false;
+  }
+
+  @Override
+  public Location findByLocation(Location location) {
+    for(Location loc : getAll())
+      if(loc.equals(location))
+        return loc;
+    return null;
+  }
+  @Override
+  public Location checkLocation(Location loc){
+    Location result;
+
+    if (!isLocationExist(loc))
+      result = createLocation(loc);
+    else result = findByLocation(loc);
+
+    return result;
   }
 }

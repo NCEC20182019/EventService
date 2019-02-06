@@ -8,8 +8,8 @@ public class EventCreateDTO {
     private Date date_start;
     private Date date_end;
     private String source_uri;
+
     private String name_location;
-    private String url_to_location;
 
     public String getTitle() {
         return title;
@@ -59,11 +59,4 @@ public class EventCreateDTO {
         this.name_location = name_location;
     }
 
-    public String getUrl_to_location() {
-        return url_to_location;
-    }
-
-    public void setUrl_to_location(String url_to_location) {
-        this.url_to_location = url_to_location;
-    }
 }
