@@ -19,6 +19,7 @@ public class Event {
     private Date date_start;
     private Date date_end;
     private String source_uri;
+    private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
@@ -30,12 +31,13 @@ public class Event {
     public Event() {
     }
     public Event(String title, String description, Date date_start,
-               Date date_end, String source_uri){
+               Date date_end, String source_uri, String type){
       this.title = title;
       this.description = description;
       this.date_start = date_start;
       this.date_end = date_end;
       this.source_uri = source_uri;
+      this.type = type;
       localizations = new ArrayList<>();
     }
 
@@ -108,6 +110,15 @@ public class Event {
         this.localizations = localizations;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
     public String toString() {
         int localizationsCount = getLocalizations() != null ? getLocalizations().size():0; //костыль какой-то
         return "Event{" +
@@ -117,7 +128,8 @@ public class Event {
                 ", date_start=" + date_start +
                 ", date_end=" + date_end +
                 ", source_uri='" + source_uri + '\'' +
-                ", location=" + location.getName() +
+                ", type='" + type + '\'' +
+                ", location=" + location +
                 ", localizations=" + localizationsCount +
                 '}';
     }

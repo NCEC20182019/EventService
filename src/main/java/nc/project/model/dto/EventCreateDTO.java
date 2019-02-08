@@ -8,6 +8,7 @@ public class EventCreateDTO {
     private Date date_start;
     private Date date_end;
     private String source_uri;
+    private String type;
 
     private String name_location;
 
@@ -59,6 +60,14 @@ public class EventCreateDTO {
         this.name_location = name_location;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "EventCreateDTO{" +
@@ -67,6 +76,7 @@ public class EventCreateDTO {
                 ", date_start=" + date_start +
                 ", date_end=" + date_end +
                 ", source_uri='" + source_uri + '\'' +
+                ", type='" + type + '\'' +
                 ", name_location='" + name_location + '\'' +
                 '}';
     }

@@ -13,6 +13,7 @@ public class EventGetDTO {
     private Date date_start;
     private Date date_end;
     private String source_uri;
+    private String type;
 
     private LocationGetDTO location;
 
@@ -82,8 +83,17 @@ public class EventGetDTO {
         this.localizations = localizations;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
+        int localizationsCount = getLocalizations() != null ? getLocalizations().size():0; //костыль какой-то
         return "EventGetDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
@@ -91,8 +101,9 @@ public class EventGetDTO {
                 ", date_start=" + date_start +
                 ", date_end=" + date_end +
                 ", source_uri='" + source_uri + '\'' +
+                ", type='" + type + '\'' +
                 ", location=" + location.getName() +
-                ", localizations=" + localizations.size() +
+                ", localizations=" + localizationsCount +
                 '}';
     }
 }
