@@ -59,4 +59,15 @@ public class EventCreateDTO {
         this.name_location = name_location;
     }
 
+    @Override
+    public String toString() {
+        return "EventCreateDTO{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", date_start=" + date_start +
+                ", date_end=" + date_end +
+                ", source_uri='" + source_uri + '\'' +
+                ", name_location='" + name_location + '\'' +
+                '}';
+    }
 }

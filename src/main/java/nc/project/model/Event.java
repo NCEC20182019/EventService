@@ -8,28 +8,28 @@ import java.util.List;
 @Entity
 @Table(name = "events")
 public class Event {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "event_id")
-  private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "event_id")
+    private int id;
 
-  private String title;
+    private String title;
 
-  private String description;
-  private Date date_start;
-  private Date date_end;
-  private String source_uri;
+    private String description;
+    private Date date_start;
+    private Date date_end;
+    private String source_uri;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "location_id")
-  private Location location;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-  @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Localization> localizations;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Localization> localizations;
 
-  public Event() {
-  }
-  public Event(String title, String description, Date date_start,
+    public Event() {
+    }
+    public Event(String title, String description, Date date_start,
                Date date_end, String source_uri){
       this.title = title;
       this.description = description;
@@ -37,74 +37,88 @@ public class Event {
       this.date_end = date_end;
       this.source_uri = source_uri;
       localizations = new ArrayList<>();
-  }
+    }
 
-  public void addLocalization(Localization localization){
+    public void addLocalization(Localization localization){
     localization.setEvent(this);
     localizations.add(localization);
-  }
+    }
 
-  public void removeLocalization(Localization localization){
+    public void removeLocalization(Localization localization){
     localizations.remove(localization);
-  }
+    }
 
-  public int getId() {
+    public int getId() {
       return id;
-  }
+    }
 
-  public String getTitle() {
+    public String getTitle() {
       return title;
-  }
+    }
 
-  public void setTitle(String title) {
+    public void setTitle(String title) {
       this.title = title;
-  }
+    }
 
-  public String getDescription() {
+    public String getDescription() {
       return description;
-  }
+    }
 
-  public void setDescription(String description) {
+    public void setDescription(String description) {
       this.description = description;
-  }
+    }
 
-  public Date getDate_start() {
+    public Date getDate_start() {
       return date_start;
-  }
+    }
 
-  public void setDate_start(Date date_start) {
+    public void setDate_start(Date date_start) {
       this.date_start = date_start;
-  }
+    }
 
-  public Date getDate_end() {
+    public Date getDate_end() {
       return date_end;
-  }
+    }
 
-  public void setDate_end(Date date_end) {
+    public void setDate_end(Date date_end) {
       this.date_end = date_end;
-  }
+    }
 
-  public String getSource_uri() {
+    public String getSource_uri() {
       return source_uri;
-  }
+    }
 
-  public void setSource_uri(String source_uri) {
+    public void setSource_uri(String source_uri) {
       this.source_uri = source_uri;
-  }
+    }
 
-  public Location getLocation() {
+    public Location getLocation() {
       return location;
-  }
+    }
 
-  public void setLocation(Location location) {
+    public void setLocation(Location location) {
       this.location = location;
-  }
+    }
 
-  public List<Localization> getLocalizations() {
+    public List<Localization> getLocalizations() {
       return localizations;
-  }
+    }
 
-  public void setLocalizations(List<Localization> localizations) {
+    public void setLocalizations(List<Localization> localizations) {
         this.localizations = localizations;
+    }
+
+    public String toString() {
+        int localizationsCount = getLocalizations() != null ? getLocalizations().size():0; //костыль какой-то
+        return "Event{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", date_start=" + date_start +
+                ", date_end=" + date_end +
+                ", source_uri='" + source_uri + '\'' +
+                ", location=" + location.getName() +
+                ", localizations=" + localizationsCount +
+                '}';
     }
 }

@@ -81,4 +81,18 @@ public class EventGetDTO {
     public void setLocalizations(List<LocalizationGetDTO> localizations) {
         this.localizations = localizations;
     }
+
+    @Override
+    public String toString() {
+        return "EventGetDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", date_start=" + date_start +
+                ", date_end=" + date_end +
+                ", source_uri='" + source_uri + '\'' +
+                ", location=" + location.getName() +
+                ", localizations=" + localizations.size() +
+                '}';
+    }
 }

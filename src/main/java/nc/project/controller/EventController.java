@@ -11,6 +11,8 @@ import nc.project.model.dto.EventGetDTO;
 import nc.project.service.EventService;
 import nc.project.service.LocationService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,8 @@ public class EventController {
     private final EventService eventService;
     private final LocationService locationService;
     private final ModelMapper modelMapper = new ModelMapper();
+
+    private static Logger logger = LoggerFactory.getLogger(EventController.class);
 
     @Autowired
     public EventController(EventService eventService, LocationService locationService) {
@@ -46,8 +50,13 @@ public class EventController {
     })
     @GetMapping(value = "/")
     public List<EventGetDTO> getAll() {
+        logger.debug("Вход в getAll()");
+
+
         List<EventGetDTO> response = new ArrayList<>();
         eventService.getAll().forEach(allEventsList->response.add(modelMapper.map(allEventsList,EventGetDTO.class)));
+
+        logger.debug("Возвращается {} размером {}",response.getClass().getTypeName(), response.size());
         return response;
     }
 
@@ -59,29 +68,48 @@ public class EventController {
     })
     @GetMapping(value = "/{eventId:\\d+}")
     public EventGetDTO getEventById(@PathVariable int eventId) {
-        return modelMapper.map(eventService.getById(eventId),EventGetDTO.class);
+        logger.debug("Вход в getEventById()");
+        logger.debug("Входной параметр eventId {}",eventId);
+
+        EventGetDTO result = modelMapper.map(eventService.getById(eventId),EventGetDTO.class);
+
+        logger.debug("Возвращается объект {}",result);
+
+        return result;
     }
 
     @ApiOperation(value = "create new event")
     @PostMapping(value = "/create")
     public void createEvent(@RequestBody EventCreateDTO newEvent) {
-
+        logger.debug("Вход в createEvent()");
+        logger.debug("Входной параметр newEvent {}",newEvent);
         //modelMapper.addMappings(skipFieldsMap);
 
         Location location = new Location(newEvent.getName_location());
+        Event ev = eventService.createEvent(modelMapper.map(newEvent,Event.class),location);
 
-        eventService.createEvent(modelMapper.map(newEvent,Event.class),location);
+        logger.debug("Создан event {}", ev);
     }
 
-    @PutMapping(value = "/{eventId:\\d+}")
+    @ApiOperation(value = "allows update event")
+    @PutMapping(value = "/update/{eventId:\\d+}")
     public void updateEvent(@PathVariable int eventId,@RequestBody EventCreateDTO updatedEvent) {
+        logger.debug("Вход в updateEvent()");
+        logger.debug("Входные параметры eventId {}, updatedEvent {}",eventId, updatedEvent);
+
         Location location = new Location(updatedEvent.getName_location());
 
-        eventService.updateEvent(eventId, modelMapper.map(updatedEvent,Event.class),location);
+        logger.debug("Обновленный event {}",eventService.updateEvent(eventId, modelMapper.map(updatedEvent,Event.class),location));
     }
 
-    @DeleteMapping(value = "/{eventId:\\d+}")
+    @ApiOperation(value = "allows delete event")
+    @DeleteMapping(value = "/delete/{eventId:\\d+}")
     public void deleteEvent(@PathVariable int eventId) {
+        logger.debug("Вход в deleteEvent()");
+        logger.debug("Входной пареаметр eventId {}", eventId);
+
         eventService.deleteEvent(eventId);
+
+        logger.debug("Выход из deleteEvent()");
     }
 }
