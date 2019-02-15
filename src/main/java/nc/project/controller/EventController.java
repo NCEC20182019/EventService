@@ -22,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "event", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin
 @Api(value = "/event", description = "An API that allows get, create/update and delete events", produces = "application/json")
 public class EventController {
 

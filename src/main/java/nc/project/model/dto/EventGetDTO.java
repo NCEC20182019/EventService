@@ -1,5 +1,6 @@
 package nc.project.model.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,19 @@ public class EventGetDTO {
     private LocationGetDTO location;
 
     private List<LocalizationGetDTO> localizations;
+
+    public EventGetDTO(int id, String title, String description, Date date_start, Date date_end, String source_uri,
+                       String type) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.date_start = date_start;
+        this.date_end = date_end;
+        this.source_uri = source_uri;
+        this.type = type;
+        this.location = new LocationGetDTO();
+        this.localizations = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
