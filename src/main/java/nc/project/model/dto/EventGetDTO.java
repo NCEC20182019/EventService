@@ -20,6 +20,8 @@ public class EventGetDTO {
 
     private List<LocalizationGetDTO> localizations;
 
+    public EventGetDTO(){}
+
     public EventGetDTO(int id, String title, String description, Date date_start, Date date_end, String source_uri,
                        String type) {
         this.id = id;
