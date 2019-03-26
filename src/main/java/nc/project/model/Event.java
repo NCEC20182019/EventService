@@ -30,6 +30,10 @@ public class Event {
 
     public Event() {
     }
+
+    public Event(int id){
+        this.id = id;
+    }
     public Event(String title, String description, Date date_start,
                Date date_end, String source_uri, String type){
       this.title = title;

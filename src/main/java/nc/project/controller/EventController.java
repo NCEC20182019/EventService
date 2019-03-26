@@ -6,10 +6,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nc.project.model.Event;
 import nc.project.model.Location;
+import nc.project.model.TriggerFlags;
 import nc.project.model.dto.EventCreateDTO;
 import nc.project.model.dto.EventGetDTO;
 import nc.project.service.EventService;
-import nc.project.service.LocationService;
+import nc.project.service.NotificationService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,15 +28,17 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
-    private final LocationService locationService;
+    private final NotificationService notificationService;
     private final ModelMapper modelMapper = new ModelMapper();
+    private Event event;
 
     private static Logger logger = LoggerFactory.getLogger(EventController.class);
 
     @Autowired
-    public EventController(EventService eventService, LocationService locationService) {
+    public EventController(EventService eventService, NotificationService notificationService) {
         this.eventService = eventService;
-        this.locationService = locationService;
+        this.notificationService = notificationService;
+        event = null;
     }
     /*private PropertyMap<Event, EventCreateDTO> skipFieldsMap = new PropertyMap<Event, EventCreateDTO>() {
         protected void configure() {
@@ -55,9 +58,9 @@ public class EventController {
 
 
         List<EventGetDTO> response = new ArrayList<>();
-        eventService.getAll().forEach(allEventsList->response.add(modelMapper.map(allEventsList,EventGetDTO.class)));
+        eventService.getAll().forEach(allEventsList -> response.add(modelMapper.map(allEventsList, EventGetDTO.class)));
 
-        logger.debug("Возвращается {} размером {}",response.getClass().getTypeName(), response.size());
+        logger.debug("Возвращается {} размером {}", response.getClass().getTypeName(), response.size());
         return response;
     }
 
@@ -70,11 +73,11 @@ public class EventController {
     @GetMapping(value = "/{eventId:\\d+}")
     public EventGetDTO getEventById(@PathVariable int eventId) {
         logger.debug("Вход в getEventById()");
-        logger.debug("Входной параметр eventId {}",eventId);
+        logger.debug("Входной параметр eventId {}", eventId);
 
-        EventGetDTO result = modelMapper.map(eventService.getById(eventId),EventGetDTO.class);
+        EventGetDTO result = modelMapper.map(eventService.getById(eventId), EventGetDTO.class);
 
-        logger.debug("Возвращается объект {}",result);
+        logger.debug("Возвращается объект {}", result);
 
         return result;
     }
@@ -83,24 +86,28 @@ public class EventController {
     @PostMapping(value = "/create")
     public void createEvent(@RequestBody EventCreateDTO newEvent) {
         logger.debug("Вход в createEvent()");
-        logger.debug("Входной параметр newEvent {}",newEvent);
-        //modelMapper.addMappings(skipFieldsMap);
+        logger.debug("Входной параметр newEvent {}", newEvent);
 
-        Location location = new Location(newEvent.getName_location());
-        Event ev = eventService.createEvent(modelMapper.map(newEvent,Event.class),location);
+        Location location = new Location(newEvent.getName_location(), newEvent.getLatitude(), newEvent.getLongitude());
+        event = eventService.createEvent(modelMapper.map(newEvent, Event.class), location);
 
-        logger.debug("Создан event {}", ev);
+        notificationService.triggerNotificationServie(event, TriggerFlags.CREATE);
+
+        logger.debug("Создан event {}", event);
     }
 
     @ApiOperation(value = "allows update event")
     @PutMapping(value = "/update/{eventId:\\d+}")
-    public void updateEvent(@PathVariable int eventId,@RequestBody EventCreateDTO updatedEvent) {
+    public void updateEvent(@PathVariable int eventId, @RequestBody EventCreateDTO updatedEvent) {
         logger.debug("Вход в updateEvent()");
-        logger.debug("Входные параметры eventId {}, updatedEvent {}",eventId, updatedEvent);
+        logger.debug("Входные параметры eventId {}, updatedEvent {}", eventId, updatedEvent);
 
-        Location location = new Location(updatedEvent.getName_location());
+        Location location = new Location(updatedEvent.getName_location(), updatedEvent.getLatitude(), updatedEvent.getLongitude());
+        event = eventService.updateEvent(eventId, modelMapper.map(updatedEvent, Event.class), location);
 
-        logger.debug("Обновленный event {}",eventService.updateEvent(eventId, modelMapper.map(updatedEvent,Event.class),location));
+        notificationService.triggerNotificationServie(event, TriggerFlags.MODIFY);
+
+        logger.debug("Обновленный event {}", event );
     }
 
     @ApiOperation(value = "allows delete event")
@@ -110,6 +117,8 @@ public class EventController {
         logger.debug("Входной пареаметр eventId {}", eventId);
 
         eventService.deleteEvent(eventId);
+
+        notificationService.triggerNotificationServie(new Event(eventId), TriggerFlags.DELETE);
 
         logger.debug("Выход из deleteEvent()");
     }

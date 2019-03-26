@@ -71,6 +71,21 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
             </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+            </dependency>
+
+            <!-- Reactive modules-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-webflux</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.projectreactor</groupId>
+                <artifactId>reactor-spring</artifactId>
+                <version>1.0.1.RELEASE</version>
+            </dependency>
 
         </dependencies>
 

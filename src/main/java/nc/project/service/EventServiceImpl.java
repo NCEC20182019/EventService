@@ -13,10 +13,14 @@ import java.util.List;
 @Service
 public class EventServiceImpl implements EventService {
 
-    @Autowired
     private EventRepository eventRepo;
+    private LocationService locService;
+
     @Autowired
-    LocationService locService;
+    public EventServiceImpl(EventRepository eventRepo, LocationService locService) {
+        this.eventRepo = eventRepo;
+        this.locService = locService;
+    }
 
     public Event getById(int eventId) {
         return eventRepo.findById(eventId);

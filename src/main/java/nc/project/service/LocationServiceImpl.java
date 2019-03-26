@@ -9,8 +9,13 @@ import java.util.List;
 @Service
 public class LocationServiceImpl implements LocationService {
 
-  @Autowired
+
   private LocationRepository locationRepo;
+
+  @Autowired
+  public LocationServiceImpl(LocationRepository locationRepo) {
+    this.locationRepo = locationRepo;
+  }
 
   @Override
   public Location getById(int locationId) {
@@ -49,6 +54,7 @@ public class LocationServiceImpl implements LocationService {
         return loc;
     return null;
   }
+
   @Override
   public Location checkLocation(Location loc){
     Location result;
