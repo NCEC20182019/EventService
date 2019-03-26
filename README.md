@@ -5,3 +5,5 @@
 3. Выполнить `mvn flyway:migrate`
 ### Swagger
 Для доступа к докуметации API запустите сервис и перейдите по: `localhost:port/swagger-ui.html`
+### Server Port
+8092

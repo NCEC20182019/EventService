@@ -8,10 +8,7 @@
     <artifactId>EventService</artifactId>
     <version>1.0</version>
     <properties>
-        <postgres.driver.version>42.2.5</postgres.driver.version>
-        <database.url>jdbc:postgresql://localhost:5432/eventDB</database.url>
-        <database.user>artem_sglv</database.user>
-        <database.password/>
+        <java.version>1.8</java.version>
     </properties>
 
         <parent>
@@ -70,6 +67,10 @@
                 <version>4.12</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+            </dependency>
 
         </dependencies>
 
@@ -78,28 +79,6 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.flywaydb</groupId>
-                    <artifactId>flyway-maven-plugin</artifactId>
-                    <version>5.2.4</version>
-                    <configuration>
-                        <sqlMigrationSeparator>__</sqlMigrationSeparator>
-                        <locations>
-                            <location>filesystem:src/main/resources/db/migrations</location>
-                        </locations>
-                        <url>${database.url}</url>
-                        <user>${database.user}</user>
-                        <password>${database.password}</password>
-                    </configuration>
                 </plugin>
             </plugins>
         </build>
