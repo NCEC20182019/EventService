@@ -16,7 +16,7 @@ public class NotificationService {
     @Value("${nc.project.notification.url}")
     private String notificationUrl;
 
-    public void triggerNotificationServie(Event event, TriggerFlags triggerFlag)
+    public void triggerNotificationService(Event event, TriggerFlags triggerFlag)
     {
         WebClient.create()
                 .post()
@@ -30,6 +30,6 @@ public class NotificationService {
                 )))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
-                .retrieve();
+                .retrieve().bodyToMono(Object.class).block();
     }
 }

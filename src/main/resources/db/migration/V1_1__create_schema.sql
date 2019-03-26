@@ -27,8 +27,8 @@ CREATE TABLE "event_localization" (
 
 CREATE TABLE "locations" (
 	"location_id" serial NOT NULL,
-	"latitude" numeric,
-	"longitude" numeric,
+	"latitude" float8,
+	"longitude" float8,
 	"street_address" varchar(40),
 	"postal_code" varchar(20),
 	"city_id" int,

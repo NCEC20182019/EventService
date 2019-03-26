@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "regions")
 public class Region {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "region_id")
     private int id;
 

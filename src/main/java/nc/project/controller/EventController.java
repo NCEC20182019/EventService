@@ -91,7 +91,7 @@ public class EventController {
         Location location = new Location(newEvent.getName_location(), newEvent.getLatitude(), newEvent.getLongitude());
         event = eventService.createEvent(modelMapper.map(newEvent, Event.class), location);
 
-        notificationService.triggerNotificationServie(event, TriggerFlags.CREATE);
+        notificationService.triggerNotificationService(event, TriggerFlags.CREATE);
 
         logger.debug("Создан event {}", event);
     }
@@ -105,7 +105,7 @@ public class EventController {
         Location location = new Location(updatedEvent.getName_location(), updatedEvent.getLatitude(), updatedEvent.getLongitude());
         event = eventService.updateEvent(eventId, modelMapper.map(updatedEvent, Event.class), location);
 
-        notificationService.triggerNotificationServie(event, TriggerFlags.MODIFY);
+        notificationService.triggerNotificationService(event, TriggerFlags.MODIFY);
 
         logger.debug("Обновленный event {}", event );
     }
@@ -118,7 +118,7 @@ public class EventController {
 
         eventService.deleteEvent(eventId);
 
-        notificationService.triggerNotificationServie(new Event(eventId), TriggerFlags.DELETE);
+        notificationService.triggerNotificationService(new Event(eventId), TriggerFlags.DELETE);
 
         logger.debug("Выход из deleteEvent()");
     }
