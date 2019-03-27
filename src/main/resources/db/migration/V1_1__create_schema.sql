@@ -1,9 +1,9 @@
 CREATE TABLE "events" (
 	"event_id" serial NOT NULL,
 	"title" varchar(200) NOT NULL,
-	"description" varchar(1500) NOT NULL,
-	"date_start" timestamptz NOT NULL,
-	"date_end" timestamptz NOT NULL,
+	"description" varchar(1500),
+	"date_start" timestamptz,
+	"date_end" timestamptz,
 	"source_uri" varchar(300),
 	"location_id" int NOT NULL,
 	CONSTRAINT events_pk PRIMARY KEY ("event_id")
@@ -17,7 +17,7 @@ CREATE TABLE "event_localization" (
 	"lang_id" varchar(2) NOT NULL,
 	"event_id" integer NOT NULL,
 	"translated_title" varchar(200) NOT NULL,
-	"translated_description" varchar(1500) NOT NULL,
+	"translated_description" varchar(1500),
 	CONSTRAINT event_localization_pk PRIMARY KEY ("lang_id","event_id")
 ) WITH (
   OIDS=FALSE
@@ -52,7 +52,7 @@ CREATE TABLE "countries" (
 CREATE TABLE "cities" (
 	"city_id" serial NOT NULL,
 	"city_name" varchar(60) NOT NULL,
-	"region_id" int,
+	"region_id" int NOT NULL,
 	CONSTRAINT cities_pk PRIMARY KEY ("city_id")
 ) WITH (
   OIDS=FALSE
