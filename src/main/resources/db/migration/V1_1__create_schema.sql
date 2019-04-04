@@ -52,7 +52,7 @@ CREATE TABLE "countries" (
 CREATE TABLE "cities" (
 	"city_id" serial NOT NULL,
 	"city_name" varchar(60) NOT NULL,
-	"region_id" int NOT NULL,
+	"region_id" int,
 	CONSTRAINT cities_pk PRIMARY KEY ("city_id")
 ) WITH (
   OIDS=FALSE
