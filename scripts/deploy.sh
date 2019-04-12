@@ -2,9 +2,9 @@
 
 echo 'Copy files...'
 
-scp -i ~/ssh/id_rsa \
+scp -i ~/.ssh/id_rsa \
     target/EventService-1.0.jar \
-    $REMOTE_USER@$REMOTE_HOST:$REMOTE_APP_DIR
+    $REMOTEUSER@$REMOTEHOST:$REMOTEAPPDIR
 echo 'Restart server...'
 ssh -i ~/.ssh/id_rsa $REMOTE_USER@$REMOTE_HOST << EOF
 
