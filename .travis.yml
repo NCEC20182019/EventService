@@ -8,16 +8,19 @@ notifications:
     on_success: change
 addons:
   sshknownhosts:
-    - 142.93.98.12
+  - 142.93.98.12
 branches:
   only:
-    - master
+  - master
 env:
   global:
-    - REMOTEAPPDIR=/home/deploy/nc-project/EventService
-    - REMOTEUSER=deploy
-    - REMOTEHOST=142.93.98.12 # your droplet IP goes here
-#beforescript:
-#  - chmod 600 deploy && mv deploy ~/.ssh/id_rsa
-#after_success:
-#  - "./scripts/deploy.sh"
+  - REMOTEAPPDIR=/home/deploy/nc-project/EventService
+  - REMOTEUSER=deploy
+  - REMOTEHOST=142.93.98.12
+before_install:
+- openssl aes-256-cbc -K $encrypted_e80869a16294_key -iv $encrypted_e80869a16294_iv
+  -in deploy.enc -out deploy -d
+beforescript:
+  - chmod 600 deploy && mv deploy ~/.ssh/id_rsa
+after_success:
+  - "./scripts/deploy.sh"
