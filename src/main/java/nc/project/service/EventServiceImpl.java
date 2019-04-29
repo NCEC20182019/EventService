@@ -3,6 +3,8 @@ package nc.project.service;
 import nc.project.model.Event;
 import nc.project.model.Location;
 import nc.project.repository.EventRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepo;
     private LocationService locService;
+    private static Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
 
     @Autowired
     public EventServiceImpl(EventRepository eventRepo, LocationService locService) {
@@ -38,6 +41,7 @@ public class EventServiceImpl implements EventService {
         //Event newEvent = new Event(title,description,date_start,date_end,source_uri);
 
         newEvent.setLocation(locService.checkLocation(location));
+        // logger.debug(ex.getMessage());
         return eventRepo.save(newEvent);
     }
 

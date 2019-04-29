@@ -14,7 +14,6 @@ public class Event {
     private int id;
 
     private String title;
-
     private String description;
     private Date date_start;
     private Date date_end;
