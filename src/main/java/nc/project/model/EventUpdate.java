@@ -1,5 +1,7 @@
 package nc.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ public class EventUpdate {
     @Column(name = "update_id")
     private int id;
 
+    @JsonIgnore
     @JoinColumn(name = "event_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Event event;
