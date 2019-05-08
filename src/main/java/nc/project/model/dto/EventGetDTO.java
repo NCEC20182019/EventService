@@ -15,6 +15,7 @@ public class EventGetDTO {
     private Date date_end;
     private String source_uri;
     private String type;
+    private String image_url;
 
     private LocationGetDTO location;
 
@@ -23,7 +24,7 @@ public class EventGetDTO {
     public EventGetDTO(){}
 
     public EventGetDTO(int id, String title, String description, Date date_start, Date date_end, String source_uri,
-                       String type) {
+                       String type,String image_url) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -31,6 +32,7 @@ public class EventGetDTO {
         this.date_end = date_end;
         this.source_uri = source_uri;
         this.type = type;
+        this.image_url = image_url;
         this.location = new LocationGetDTO();
         this.localizations = new ArrayList<>();
     }
@@ -45,6 +47,14 @@ public class EventGetDTO {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public void setTitle(String title) {
@@ -109,7 +119,6 @@ public class EventGetDTO {
 
     @Override
     public String toString() {
-        int localizationsCount = getLocalizations() != null ? getLocalizations().size():0; //костыль какой-то
         return "EventGetDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
@@ -118,8 +127,9 @@ public class EventGetDTO {
                 ", date_end=" + date_end +
                 ", source_uri='" + source_uri + '\'' +
                 ", type='" + type + '\'' +
-                ", location=" + location.getName() +
-                ", localizations=" + localizationsCount +
+                ", image_url='" + image_url + '\'' +
+                ", location=" + location +
+                ", localizations=" + localizations +
                 '}';
     }
 }

@@ -42,8 +42,8 @@ public class ControllerTest {
     @BeforeClass
     public static void setupTestData() {
         test_get_data = new ArrayList<>();
-        test_get_data.add(new EventGetDTO(1,"test_event_1","test_description", new Date(), new Date(),"test_url1","test_type1"));
-        test_get_data.add(new EventGetDTO(2,"test_event_2","test_description", new Date(), new Date(),"test_url1","test_type1"));
+        test_get_data.add(new EventGetDTO(1,"test_event_1","test_description", new Date(), new Date(),"test_url1","test_type1","testImageUrl"));
+        test_get_data.add(new EventGetDTO(2,"test_event_2","test_description", new Date(), new Date(),"test_url1","test_type1", "testImageUrl1"));
     }
 
 
