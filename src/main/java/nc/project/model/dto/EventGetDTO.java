@@ -7,6 +7,7 @@ import java.util.List;
 public class EventGetDTO {
 
     private int id;
+    private Integer owner_id;
 
     private String title;
 
@@ -24,7 +25,7 @@ public class EventGetDTO {
     public EventGetDTO(){}
 
     public EventGetDTO(int id, String title, String description, Date date_start, Date date_end, String source_uri,
-                       String type,String image_url) {
+                       String type,String image_url, int owner_id) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -33,6 +34,7 @@ public class EventGetDTO {
         this.source_uri = source_uri;
         this.type = type;
         this.image_url = image_url;
+        this.owner_id = owner_id;
         this.location = new LocationGetDTO();
         this.localizations = new ArrayList<>();
     }
@@ -117,11 +119,20 @@ public class EventGetDTO {
         this.type = type;
     }
 
+    public Integer getOwner_id() {
+        return owner_id;
+    }
+
+    public void setOwner_id(Integer owner_id) {
+        this.owner_id = owner_id;
+    }
+
     @Override
     public String toString() {
         return "EventGetDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", owner_id='" + owner_id + '\'' +
                 ", description='" + description + '\'' +
                 ", date_start=" + date_start +
                 ", date_end=" + date_end +

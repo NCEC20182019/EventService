@@ -1,0 +1,1 @@
+alter table "events" add column "owner_id" integer;

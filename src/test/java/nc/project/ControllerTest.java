@@ -42,14 +42,14 @@ public class ControllerTest {
     @BeforeClass
     public static void setupTestData() {
         test_get_data = new ArrayList<>();
-        test_get_data.add(new EventGetDTO(1,"test_event_1","test_description", new Date(), new Date(),"test_url1","test_type1","testImageUrl"));
-        test_get_data.add(new EventGetDTO(2,"test_event_2","test_description", new Date(), new Date(),"test_url1","test_type1", "testImageUrl1"));
+        test_get_data.add(new EventGetDTO(1,"test_event_1","test_description", new Date(), new Date(),"test_url1","test_type1","testImageUrl", 0));
+        test_get_data.add(new EventGetDTO(2,"test_event_2","test_description", new Date(), new Date(),"test_url1","test_type1", "testImageUrl1", 0));
     }
 
 
     @Test
     public void getAll() throws Exception {
-        String apiUrl = "/event/";
+        String apiUrl = "/events";
 
         given(eventController.getAll()).willReturn(test_get_data);
 
@@ -63,7 +63,7 @@ public class ControllerTest {
 
     @Test
     public void getEventById() throws Exception {
-        String apiUrl = "/event/"+test_get_data.get(0).getId();
+        String apiUrl = "/events/"+test_get_data.get(0).getId();
 
         //given(eventController.getEventById(event.getId())).willReturn(event);
 

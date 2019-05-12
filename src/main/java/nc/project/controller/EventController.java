@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "event", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/events", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
-@Api(value = "/event", description = "An API that allows get, create/update and delete events", produces = "application/json")
+@Api(value = "/events", description = "An API that allows get, create/update and delete events", produces = "application/json")
 public class EventController {
 
     private final EventService eventService;
@@ -52,7 +52,7 @@ public class EventController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
             @ApiResponse(code = 404, message = "Events not found")
     })
-    @GetMapping(value = "/")
+    @GetMapping
     public List<EventGetDTO> getAll() {
         logger.debug("Вход в getAll()");
 

@@ -2,6 +2,7 @@ package nc.project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class Event{
     private String source_uri;
     private String type;
     private String image_url;
+    private Integer owner_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
@@ -40,7 +42,7 @@ public class Event{
         this.id = id;
     }
     public Event(String title, String description, Date date_start,
-               Date date_end, String source_uri, String type, String image_url){
+               Date date_end, String source_uri, String type, String image_url, int owner_id){
       this.title = title;
       this.description = description;
       this.date_start = date_start;
@@ -48,6 +50,7 @@ public class Event{
       this.source_uri = source_uri;
       this.type = type;
       this.image_url = image_url;
+      this.owner_id = owner_id;
       localizations = new ArrayList<>();
     }
 
@@ -136,6 +139,14 @@ public class Event{
         this.type = type;
     }
 
+    public Integer getOwner_id() {
+        return owner_id;
+    }
+
+    public void setOwner_id(Integer owner_id) {
+        this.owner_id = owner_id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -144,6 +155,7 @@ public class Event{
         Event event = (Event) o;
 
         if (id != event.id) return false;
+        if (owner_id.equals(event.owner_id)) return false;
         if (title != null ? !title.equals(event.title) : event.title != null) return false;
         if (description != null ? !description.equals(event.description) : event.description != null) return false;
         if (date_start != null ? !date_start.equals(event.date_start) : event.date_start != null) return false;
@@ -161,6 +173,7 @@ public class Event{
         return "Event{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", owner_id='" + owner_id + '\'' +
                 ", description='" + description + '\'' +
                 ", date_start=" + date_start +
                 ", date_end=" + date_end +

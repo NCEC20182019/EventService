@@ -10,6 +10,7 @@ import java.util.Date;
 @Setter
 @ToString
 public class EventCreateDTO {
+    private Integer owner_id;
     private String title;
     private String description;
     private Date date_start;
