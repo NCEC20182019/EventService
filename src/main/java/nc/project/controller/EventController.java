@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import nc.project.model.Event;
 import nc.project.model.Location;
 import nc.project.model.TriggerFlags;
+import nc.project.model.Type;
 import nc.project.model.dto.EventCreateDTO;
 import nc.project.model.dto.EventGetDTO;
 import nc.project.service.EventService;
@@ -15,6 +16,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,6 +83,22 @@ public class EventController {
         logger.debug("Возвращается объект {}", result);
 
         return result;
+    }
+    @ApiOperation(value = "get all event types", response = Type.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Event types Retrieved", response = Type.class),
+            @ApiResponse(code = 500, message = "Internal Server Error"),
+            @ApiResponse(code = 404, message = "Types not found")
+    })
+    @GetMapping(value = "/types")
+    public List<Type> getAllTypes() {
+        logger.debug("Вход в getAllTypes()");
+
+        List<Type> response = eventService.getAllTypes();
+
+        logger.debug("Возвращается объект {}", response);
+
+        return response;
     }
 
     @ApiOperation(value = "create new event")
