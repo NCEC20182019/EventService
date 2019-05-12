@@ -2,8 +2,10 @@ package nc.project.service;
 
 import nc.project.model.Event;
 import nc.project.model.Location;
+import nc.project.model.Type;
 import nc.project.model.dto.EventGetDTO;
 import nc.project.repository.EventRepository;
+import nc.project.repository.TypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,12 +22,14 @@ public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepo;
     private LocationService locService;
+    private TypeRepository typeRepo;
     private static Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
 
     @Autowired
-    public EventServiceImpl(EventRepository eventRepo, LocationService locService) {
+    public EventServiceImpl(EventRepository eventRepo, LocationService locService, TypeRepository typeRepo) {
         this.eventRepo = eventRepo;
         this.locService = locService;
+        this.typeRepo = typeRepo;
     }
 
     public Event getById(int eventId) {
@@ -65,5 +69,10 @@ public class EventServiceImpl implements EventService {
 
     public void deleteEvent(int eventId) {
         eventRepo.deleteById(eventId);
+    }
+
+    @Override
+    public List<Type> getAllTypes() {
+        return typeRepo.findAll();
     }
 }
