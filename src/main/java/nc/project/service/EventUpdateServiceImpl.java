@@ -27,6 +27,11 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     }
 
     @Override
+    public ArrayList<EventUpdate> getByEvent(Event event) {
+        return updatesRep.findByEvent(event);
+    }
+
+    @Override
     public List<EventUpdate> getAll() {
         List<EventUpdate> list = new ArrayList<>();
         for(EventUpdate eu : updatesRep.findAll())

@@ -1,5 +1,6 @@
 package nc.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class City {
     private Region region;
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Location> locations;
 
     public City(){

@@ -92,6 +92,11 @@ select events.*
             eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDate_start(),e.getDate_end(),e.getType()));
         return eventsForUpdate;
     }
+    @RequestMapping(value = "/by_event", method = RequestMethod.GET)
+    @ResponseBody
+    public ArrayList<EventUpdate> getUpdatesByEventId(@RequestParam(value = "id",required = true) int event_id){
+        return eventUpdateService.getByEvent(eventService.getById(event_id));
+    }
 
 
 }

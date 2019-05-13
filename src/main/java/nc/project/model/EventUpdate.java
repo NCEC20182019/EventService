@@ -17,6 +17,7 @@ public class EventUpdate {
 
     @JoinColumn(name = "event_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Event event;
 
     private String url_to_tweet;
