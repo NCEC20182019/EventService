@@ -46,11 +46,9 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     }
 
     @Override
-    public EventUpdate updateEventUpdate(int eventUpdateId, EventUpdate updatedEventUpdate, Event event) {
+    public EventUpdate updateEventUpdate(int eventUpdateId, EventUpdate updatedEventUpdate) {
         EventUpdate updateFromDD = updatesRep.findById(eventUpdateId);
-        BeanUtils.copyProperties(updatedEventUpdate, updateFromDD, "id", "event");
-        if(!updateFromDD.getEvent().equals(event))
-            updateFromDD.setEvent(event);
+        BeanUtils.copyProperties(updatedEventUpdate, updateFromDD, "id");
         return updatesRep.save(updateFromDD);
     }
 
@@ -58,4 +56,6 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     public void deleteEventUpdate(int eventUpdateId) {
         updatesRep.deleteById(eventUpdateId);
     }
+
+
 }

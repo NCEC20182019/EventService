@@ -11,6 +11,6 @@ public interface EventUpdateService {
     ArrayList<EventUpdate> getByEvent(Event event);
     List<EventUpdate> getAll();
     EventUpdate createEventUpdate(EventUpdate newUpdate, Event event);
-    EventUpdate updateEventUpdate(int eventUpdateId, EventUpdate updatedEventUpdate, Event event);
+    EventUpdate updateEventUpdate(int eventUpdateId, EventUpdate updatedEventUpdate);
     void deleteEventUpdate(int eventUpdateId);
 }

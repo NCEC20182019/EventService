@@ -43,22 +43,30 @@ public class UpdatesController {
         List<EventUpdateGetDTO> response = new ArrayList<>();
         eventUpdateService.getAll().forEach(new Consumer<EventUpdate>() {
             @Override
-            public void accept(EventUpdate allEventsList) {
-                response.add(modelMapper.map(allEventsList, EventUpdateGetDTO.class));
+            public void accept(EventUpdate allUpdatesList) {
+                response.add(modelMapper.map(allUpdatesList, EventUpdateGetDTO.class));
             }
         });
         return response;
     }
 
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void createUpdate(@RequestBody EventUpdateCreateDTO newUpdate){
-        System.out.println(newUpdate.toString());
-        System.out.println(newUpdate.getEvent_id());
         Event event = eventService.getById(newUpdate.getEvent_id());
-        //eventUpdate.setEvent(event);
+        ArrayList<EventUpdate> updatesFromDb = eventUpdateService.getByEvent(event);
+        if (updatesFromDb.size() == 0){
         eventUpdate = eventUpdateService.createEventUpdate(modelMapper.map(newUpdate, EventUpdate.class), event);
         logger.debug("Создан update {}", eventUpdate);
+        } else {
+            for (EventUpdate eu : updatesFromDb)
+                eventUpdateService.updateEventUpdate(eu.getId(), modelMapper.map(newUpdate, EventUpdate.class));
+            logger.debug("update c id " + eventUpdate.getId()  + "был обновлен");
+        }
+
     }
+
+
 
     @RequestMapping(value = "/batch", method = RequestMethod.GET)
     public ArrayList<InfoForUpdates> getBatch(){
@@ -82,6 +90,9 @@ select events.*
         for(Event e : events){
             hasUpdates = false;
             for (EventUpdate eu : updates) {
+                System.out.println(eu.getLast_update_date());
+                System.out.println(date);
+                if (eu.getLast_update_date() != null) System.out.println(eu.getLast_update_date().before(date));
                 if (e.equals(eu.getEvent()) && !tmp.contains(e) && eu.getLast_update_date() != null && eu.getLast_update_date().before(date)) {hasUpdates = true; tmp.add(e);}
                 if (e.equals(eu.getEvent())) hasUpdates = true;
             }
@@ -92,6 +103,17 @@ select events.*
             eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDate_start(),e.getDate_end(),e.getType()));
         return eventsForUpdate;
     }
+
+    public static void main(String[] args) {
+        Date d1 = new Date();
+        System.out.println("d1=" + d1);
+        Date d = new Date();
+        d.setHours(0);
+        System.out.println("d=" + d);
+        System.out.println(d1.before(d));
+
+    }
+
     @RequestMapping(value = "/by_event", method = RequestMethod.GET)
     @ResponseBody
     public ArrayList<EventUpdate> getUpdatesByEventId(@RequestParam(value = "id",required = true) int event_id){
