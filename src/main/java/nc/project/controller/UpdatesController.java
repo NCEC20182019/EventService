@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @RestController
-@RequestMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "updates", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
 public class UpdatesController {
 
@@ -29,7 +29,7 @@ public class UpdatesController {
     private final ModelMapper modelMapper = new ModelMapper();
     private EventUpdate eventUpdate;
     private final EventService eventService;
-    private static Logger logger = LoggerFactory.getLogger(EventController.class);
+    private static Logger logger = LoggerFactory.getLogger(UpdatesController.class);
 
     @Autowired
     public UpdatesController(EventUpdateService eventUpdateService, EventService eventService) {
@@ -59,9 +59,10 @@ public class UpdatesController {
         eventUpdate = eventUpdateService.createEventUpdate(modelMapper.map(newUpdate, EventUpdate.class), event);
         logger.debug("Создан update {}", eventUpdate);
         } else {
-            for (EventUpdate eu : updatesFromDb)
+            for (EventUpdate eu : updatesFromDb){
                 eventUpdateService.updateEventUpdate(eu.getId(), modelMapper.map(newUpdate, EventUpdate.class));
-            logger.debug("update c id " + eventUpdate.getId()  + "был обновлен");
+                logger.debug("update c id " + eu.getId()  + "был обновлен");
+            }
         }
 
     }
@@ -90,29 +91,18 @@ select events.*
         for(Event e : events){
             hasUpdates = false;
             for (EventUpdate eu : updates) {
-                System.out.println(eu.getLast_update_date());
-                System.out.println(date);
-                if (eu.getLast_update_date() != null) System.out.println(eu.getLast_update_date().before(date));
                 if (e.equals(eu.getEvent()) && !tmp.contains(e) && eu.getLast_update_date() != null && eu.getLast_update_date().before(date)) {hasUpdates = true; tmp.add(e);}
                 if (e.equals(eu.getEvent())) hasUpdates = true;
             }
             if (!hasUpdates) tmp.add(e);
-            if(tmp.size() > 5) break;//размер батча 5
+            if(tmp.size() >= 2) break;//размер батча 2
         }
         for (Event e : tmp)
             eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDate_start(),e.getDate_end(),e.getType()));
+        logger.debug("Batch создан", eventsForUpdate);
         return eventsForUpdate;
     }
 
-    public static void main(String[] args) {
-        Date d1 = new Date();
-        System.out.println("d1=" + d1);
-        Date d = new Date();
-        d.setHours(0);
-        System.out.println("d=" + d);
-        System.out.println(d1.before(d));
-
-    }
 
     @RequestMapping(value = "/by_event", method = RequestMethod.GET)
     @ResponseBody
