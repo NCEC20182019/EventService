@@ -95,7 +95,7 @@ select events.*
                 if (e.equals(eu.getEvent())) hasUpdates = true;
             }
             if (!hasUpdates) tmp.add(e);
-            if(tmp.size() >= 2) break;//размер батча 2
+            if(tmp.size() >= 1) break;//размер батча 2
         }
         for (Event e : tmp)
             eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDate_start(),e.getDate_end(),e.getType()));
