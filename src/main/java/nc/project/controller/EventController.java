@@ -61,7 +61,7 @@ public class EventController {
 
 
         List<EventGetDTO> response = new ArrayList<>();
-        eventService.getAll().forEach(allEventsList -> response.add(modelMapper.map(allEventsList, EventGetDTO.class)));
+        eventService.getAll().forEach(event -> response.add(modelMapper.map(event, EventGetDTO.class)));
 
         logger.debug("Возвращается {} размером {}", response.getClass().getTypeName(), response.size());
         return response;

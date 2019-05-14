@@ -73,6 +73,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Type> getAllTypes() {
-        return typeRepo.findAll();
+        return typeRepo.findAllByOrderById();
     }
 }
