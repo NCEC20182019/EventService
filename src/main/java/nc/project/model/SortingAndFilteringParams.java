@@ -31,5 +31,9 @@ public class SortingAndFilteringParams {
   }
   private int sort;
   private Filter filter;
+
+  public boolean isFilter(){
+    return filter != null;
+  }
 }
 

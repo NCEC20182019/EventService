@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -90,14 +92,18 @@ public class EventController {
             @ApiResponse(code = 404, message = "Events not found")
     })
     @PostMapping
-    public List<EventGetDTO> getSortedAndFiltered(@RequestBody SortingAndFilteringParams params) {
+    @ResponseBody
+    public ResponseEntity<List<EventGetDTO>> getSortedAndFiltered(@RequestBody SortingAndFilteringParams params) {
         logger.debug("Вход в SortedAndFiltered()");
 
+
+        if (!params.isFilter())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         List<EventGetDTO> response = eventService.sortAndFilter(params);
 
         logger.debug("Возвращается {} размером {}", response.getClass().getTypeName(), response.size());
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ApiOperation(value = "get all event types", response = Type.class)
