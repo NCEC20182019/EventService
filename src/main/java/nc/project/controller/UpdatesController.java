@@ -5,7 +5,6 @@ import nc.project.model.EventUpdate;
 import nc.project.model.InfoForUpdates;
 import nc.project.model.dto.EventUpdateCreateDTO;
 import nc.project.model.dto.EventUpdateGetDTO;
-import nc.project.repository.EventRepository;
 import nc.project.service.EventService;
 import nc.project.service.EventUpdateService;
 import org.modelmapper.ModelMapper;
@@ -98,7 +97,7 @@ select events.*
             if(tmp.size() >= 1) break;//размер батча 2
         }
         for (Event e : tmp)
-            eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDate_start(),e.getDate_end(),e.getType()));
+            eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDateStart(),e.getDateEnd(),e.getType()));
         logger.debug("Batch создан", eventsForUpdate);
         return eventsForUpdate;
     }

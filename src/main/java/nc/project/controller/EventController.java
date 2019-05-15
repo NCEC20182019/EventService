@@ -4,10 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import nc.project.model.Event;
-import nc.project.model.Location;
-import nc.project.model.TriggerFlags;
-import nc.project.model.Type;
+import nc.project.model.*;
 import nc.project.model.dto.EventCreateDTO;
 import nc.project.model.dto.EventGetDTO;
 import nc.project.service.EventService;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/events", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -84,6 +82,24 @@ public class EventController {
 
         return result;
     }
+
+    @ApiOperation(value = "get sorted and filtered events", response = EventGetDTO.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Events Details Retrieved", response = EventGetDTO.class),
+            @ApiResponse(code = 500, message = "Internal Server Error"),
+            @ApiResponse(code = 404, message = "Events not found")
+    })
+    @PostMapping
+    public List<EventGetDTO> getSortedAndFiltered(@RequestBody SortingAndFilteringParams params) {
+        logger.debug("Вход в SortedAndFiltered()");
+
+
+        List<EventGetDTO> response = eventService.sortAndFilter(params);
+
+        logger.debug("Возвращается {} размером {}", response.getClass().getTypeName(), response.size());
+        return response;
+    }
+
     @ApiOperation(value = "get all event types", response = Type.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Event types Retrieved", response = Type.class),

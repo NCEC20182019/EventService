@@ -2,10 +2,12 @@ package nc.project.service;
 
 import nc.project.model.Event;
 import nc.project.model.Location;
+import nc.project.model.SortingAndFilteringParams;
 import nc.project.model.Type;
 import nc.project.model.dto.EventGetDTO;
 import nc.project.repository.EventRepository;
 import nc.project.repository.TypeRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -15,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -23,6 +27,7 @@ public class EventServiceImpl implements EventService {
     private EventRepository eventRepo;
     private LocationService locService;
     private TypeRepository typeRepo;
+    private final ModelMapper modelMapper;
     private static Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
 
     @Autowired
@@ -30,6 +35,7 @@ public class EventServiceImpl implements EventService {
         this.eventRepo = eventRepo;
         this.locService = locService;
         this.typeRepo = typeRepo;
+        modelMapper = new ModelMapper();
     }
 
     public Event getById(int eventId) {
@@ -74,5 +80,28 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Type> getAllTypes() {
         return typeRepo.findAllByOrderById();
+    }
+
+    @Override
+    public List<EventGetDTO> sortAndFilter(SortingAndFilteringParams params) {
+        Set<EventGetDTO> eventSet = new HashSet<>();
+        if (params.getFilter().isTypeFilter()){
+            eventRepo.findAllByTypeIn(params.getFilter().getTypes()).forEach(e -> eventSet.add(modelMapper.map(e, EventGetDTO.class)));
+        }
+        if (params.getFilter().isDateFilter()) {
+            eventRepo.findAllByDateStartGreaterThanAndDateEndLessThan(
+                    params.getFilter().getDateFrom(), params.getFilter().getDateTo()).forEach(
+                            e -> eventSet.add(modelMapper.map(e, EventGetDTO.class))
+            );
+        }
+        if (params.getFilter().isAreaFilter()){
+            eventRepo.findAllByAreaSorting(
+                    params.getFilter().getArea().getCenter().getLatitude(),
+                    params.getFilter().getArea().getCenter().getLongitude(),
+                    params.getFilter().getArea().getRadius()).forEach(
+                            e -> eventSet.add(modelMapper.map(e, EventGetDTO.class))
+            );
+        }
+        return new ArrayList<>(eventSet);
     }
 }
