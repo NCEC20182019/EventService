@@ -9,9 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
+
 
 import java.net.ConnectException;
 
@@ -25,6 +30,15 @@ public class NotificationService {
     public void triggerNotificationService(Event event, TriggerFlags triggerFlag)
     {
         try {
+            Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
+            String token = "";
+            if (details instanceof OAuth2AuthenticationDetails){
+                OAuth2AuthenticationDetails oAuth2AuthenticationDetails = (OAuth2AuthenticationDetails)details;
+                token = oAuth2AuthenticationDetails.getTokenValue();
+            }
+
+            final String ftoken = token;
+
             WebClient.create()
                     .post()
                     .uri(notificationUrl)
@@ -36,7 +50,10 @@ public class NotificationService {
                             event.getLocation().getLongitude()
                     )))
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .headers(h -> h.setBearerAuth(ftoken))
                     .accept(MediaType.APPLICATION_JSON)
+                    .attributes(ServerOAuth2AuthorizedClientExchangeFilterFunction
+                            .clientRegistrationId("event"))
                     .retrieve().bodyToMono(Object.class).block();
         }catch (Exception ex) //TODO найти какой тут эксепшен кидается
         {
