@@ -3,6 +3,7 @@ package nc.project.model.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class EventGetDTO {
 
@@ -125,6 +126,19 @@ public class EventGetDTO {
 
     public void setOwner_id(Integer owner_id) {
         this.owner_id = owner_id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EventGetDTO that = (EventGetDTO) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

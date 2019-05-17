@@ -1,11 +1,8 @@
 package nc.project.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,12 +18,15 @@ public class Event{
 
     private String title;
     private String description;
-    private Date date_start;
-    private Date date_end;
+    @Column(name = "date_start")
+    private Date dateStart;
+    @Column(name = "date_end")
+    private Date dateEnd;
     private String source_uri;
     private String type;
     private String image_url;
-    private Integer owner_id;
+    @Column(name = "owner_id")
+    private Integer ownerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
@@ -41,16 +41,16 @@ public class Event{
     public Event(int id){
         this.id = id;
     }
-    public Event(String title, String description, Date date_start,
-               Date date_end, String source_uri, String type, String image_url, int owner_id){
+    public Event(String title, String description, Date dateStart,
+                 Date dateEnd, String source_uri, String type, String image_url, int ownerId){
       this.title = title;
       this.description = description;
-      this.date_start = date_start;
-      this.date_end = date_end;
+      this.dateStart = dateStart;
+      this.dateEnd = dateEnd;
       this.source_uri = source_uri;
       this.type = type;
       this.image_url = image_url;
-      this.owner_id = owner_id;
+      this.ownerId = ownerId;
       localizations = new ArrayList<>();
     }
 
@@ -91,20 +91,20 @@ public class Event{
       this.description = description;
     }
 
-    public Date getDate_start() {
-      return date_start;
+    public Date getDateStart() {
+      return dateStart;
     }
 
-    public void setDate_start(Date date_start) {
-      this.date_start = date_start;
+    public void setDateStart(Date dateStart) {
+      this.dateStart = dateStart;
     }
 
-    public Date getDate_end() {
-      return date_end;
+    public Date getDateEnd() {
+      return dateEnd;
     }
 
-    public void setDate_end(Date date_end) {
-      this.date_end = date_end;
+    public void setDateEnd(Date dateEnd) {
+      this.dateEnd = dateEnd;
     }
 
     public String getSource_uri() {
@@ -139,12 +139,12 @@ public class Event{
         this.type = type;
     }
 
-    public Integer getOwner_id() {
-        return owner_id;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner_id(Integer owner_id) {
-        this.owner_id = owner_id;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 
     @Override
@@ -155,11 +155,11 @@ public class Event{
         Event event = (Event) o;
 
         if (id != event.id) return false;
-        if (owner_id.equals(event.owner_id)) return false;
+        if (ownerId.equals(event.ownerId)) return false;
         if (title != null ? !title.equals(event.title) : event.title != null) return false;
         if (description != null ? !description.equals(event.description) : event.description != null) return false;
-        if (date_start != null ? !date_start.equals(event.date_start) : event.date_start != null) return false;
-        if (date_end != null ? !date_end.equals(event.date_end) : event.date_end != null) return false;
+        if (dateStart != null ? !dateStart.equals(event.dateStart) : event.dateStart != null) return false;
+        if (dateEnd != null ? !dateEnd.equals(event.dateEnd) : event.dateEnd != null) return false;
         if (source_uri != null ? !source_uri.equals(event.source_uri) : event.source_uri != null) return false;
         if (type != null ? !type.equals(event.type) : event.type != null) return false;
         if (image_url != null ? !image_url.equals(event.image_url) : event.image_url != null) return false;
@@ -173,10 +173,10 @@ public class Event{
         return "Event{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", owner_id='" + owner_id + '\'' +
+                ", owner_id='" + ownerId + '\'' +
                 ", description='" + description + '\'' +
-                ", date_start=" + date_start +
-                ", date_end=" + date_end +
+                ", date_start=" + dateStart +
+                ", date_end=" + dateEnd +
                 ", source_uri='" + source_uri + '\'' +
                 ", type='" + type + '\'' +
                 ", image_url='" + image_url + '\'' +

@@ -2,6 +2,7 @@ package nc.project.service;
 
 import nc.project.model.Event;
 import nc.project.model.Location;
+import nc.project.model.SortingAndFilteringParams;
 import nc.project.model.Type;
 import nc.project.model.dto.EventGetDTO;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,6 @@ public interface EventService {
     void deleteEvent(int eventId);
 
     List<Type> getAllTypes();
+
+    List<EventGetDTO> sortAndFilter(SortingAndFilteringParams params);
 }
