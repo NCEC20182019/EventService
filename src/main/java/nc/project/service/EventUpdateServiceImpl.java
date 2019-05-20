@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -46,9 +47,11 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     }
 
     @Override
-    public EventUpdate updateEventUpdate(int eventUpdateId, EventUpdate updatedEventUpdate) {
+    public EventUpdate updateEventUpdate(int eventUpdateId, EventUpdate updatedEventUpdate, Event event) {
         EventUpdate updateFromDD = updatesRep.findById(eventUpdateId);
         BeanUtils.copyProperties(updatedEventUpdate, updateFromDD, "id");
+        updateFromDD.setEvent(event);
+        updateFromDD.setLast_update_date(new Date());
         return updatesRep.save(updateFromDD);
     }
 

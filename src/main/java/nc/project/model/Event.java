@@ -27,6 +27,8 @@ public class Event{
     private String image_url;
     @Column(name = "owner_id")
     private Integer ownerId;
+    @Column(name = "last_updating_date")
+    private Date lastUpdatingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
@@ -52,6 +54,14 @@ public class Event{
       this.image_url = image_url;
       this.ownerId = ownerId;
       localizations = new ArrayList<>();
+    }
+
+    public Date getLastUpdatingDate() {
+        return lastUpdatingDate;
+    }
+
+    public void setLastUpdatingDate(Date lastUpdatingDate) {
+        this.lastUpdatingDate = lastUpdatingDate;
     }
 
     public void addLocalization(Localization localization){
@@ -173,13 +183,14 @@ public class Event{
         return "Event{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", owner_id='" + ownerId + '\'' +
                 ", description='" + description + '\'' +
-                ", date_start=" + dateStart +
-                ", date_end=" + dateEnd +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
                 ", source_uri='" + source_uri + '\'' +
                 ", type='" + type + '\'' +
                 ", image_url='" + image_url + '\'' +
+                ", ownerId=" + ownerId +
+                ", lastUpdatingDate=" + lastUpdatingDate +
                 ", location=" + location +
                 ", localizations=" + localizations +
                 '}';

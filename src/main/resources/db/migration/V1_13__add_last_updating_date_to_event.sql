@@ -1,0 +1,1 @@
+alter table "events" add column "last_updating_date" timestamptz;

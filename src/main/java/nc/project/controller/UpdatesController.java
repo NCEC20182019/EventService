@@ -59,7 +59,7 @@ public class UpdatesController {
         logger.debug("Создан update {}", eventUpdate);
         } else {
             for (EventUpdate eu : updatesFromDb){
-                eventUpdateService.updateEventUpdate(eu.getId(), modelMapper.map(newUpdate, EventUpdate.class));
+                eventUpdateService.updateEventUpdate(eu.getId(), modelMapper.map(newUpdate, EventUpdate.class),event);
                 logger.debug("update c id " + eu.getId()  + "был обновлен");
             }
         }
@@ -73,32 +73,42 @@ public class UpdatesController {
         Date date = new Date();
         date.setHours(0);
         date.setMinutes(0);
-        ArrayList<InfoForUpdates> eventsForUpdate = new ArrayList<>();
 
+        ArrayList<InfoForUpdates> eventsForUpdate = new ArrayList<>();
+//TODO заменить на запросы в БД
         List<Event> events = eventService.getAll();
         ArrayList<Event> tmp = new ArrayList<>();
 
         List<EventUpdate> updates = eventUpdateService.getAll();
-        Boolean hasUpdates;
 /*
 Вместо
 select events.*
     from events LEFT JOIN event_updates
         ON events.event_id = event_updates.event_id
-      WHERE event_updates.last_update_date < date_trunc('day',current_timestamp);
+      WHERE event_updates.last_update_date < date_trunc('day',current_timestamp)
+      AND
+      --протестировать
+      (events.last_updating_date IS NULL OR events.last_updating_date < date_trunc('day',current_timestamp))
+      ;
  */
         for(Event e : events){
-            hasUpdates = false;
-            for (EventUpdate eu : updates) {
-                if (e.equals(eu.getEvent()) && !tmp.contains(e) && eu.getLast_update_date() != null && eu.getLast_update_date().before(date)) {hasUpdates = true; tmp.add(e);}
-                if (e.equals(eu.getEvent())) hasUpdates = true;
-            }
-            if (!hasUpdates) tmp.add(e);
+            if(e.getLastUpdatingDate() == null) {tmp.add(e); break;}
+            for (EventUpdate eu : updates)
+                if (eu.isReadyForUpdate(e, tmp, date)) tmp.add(e);
             if(tmp.size() >= 1) break;//размер батча 2
         }
-        for (Event e : tmp)
+
+
+        for (Event e : tmp){
+            e.setLastUpdatingDate(new Date());
+            eventService.updateEvent(e.getId(), e, e.getLocation());
             eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDateStart(),e.getDateEnd(),e.getType()));
-        logger.debug("Batch создан", eventsForUpdate);
+        }
+
+        if(eventsForUpdate.size() > 0){
+            logger.debug("Batch создан ", eventsForUpdate.get(0));
+            System.out.println(eventsForUpdate.get(0) + " " + eventsForUpdate.size());
+        }
         return eventsForUpdate;
     }
 
