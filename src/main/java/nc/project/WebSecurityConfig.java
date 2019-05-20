@@ -16,12 +16,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("events/types, events/create," +
-                        " events/update/{eventId:\\d+}, events//delete/{eventId:\\d+}, updates/**")
+                .antMatchers("/events/sort, /events/types, /events/create," +
+                        " /events/update/{eventId:\\d+}, /events/delete/{eventId:\\d+}, /updates/**")
                 .authenticated()
                 .anyRequest()
                 .permitAll()
-            .and()
+        .and()
+                .csrf()
+                .disable()
                 .httpBasic()
                 .disable();
     }

@@ -91,7 +91,7 @@ public class EventController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
             @ApiResponse(code = 404, message = "Events not found")
     })
-    @PostMapping
+    @PostMapping(value = "/sort")
     @ResponseBody
     public ResponseEntity<List<EventGetDTO>> getSortedAndFiltered(@RequestBody SortingAndFilteringParams params) {
         logger.debug("Вход в SortedAndFiltered()");
@@ -123,9 +123,9 @@ public class EventController {
         return response;
     }
 
-    @ApiOperation(value = "create new event")
+    @ApiOperation(value = "create new event", response = Event.class)
     @PostMapping(value = "/create")
-    public void createEvent(@RequestBody EventCreateDTO newEvent) {
+    public Event createEvent(@RequestBody EventCreateDTO newEvent) {
         logger.debug("Вход в createEvent()");
         logger.debug("Входной параметр newEvent {}", newEvent);
 
@@ -135,11 +135,12 @@ public class EventController {
         notificationService.triggerNotificationService(event, TriggerFlags.CREATE);
 
         logger.debug("Создан event {}", event);
+        return event;
     }
 
-    @ApiOperation(value = "allows update event")
+    @ApiOperation(value = "allows update event", response = Event.class)
     @PutMapping(value = "/update/{eventId:\\d+}")
-    public void updateEvent(@PathVariable int eventId, @RequestBody EventCreateDTO updatedEvent) {
+    public Event updateEvent(@PathVariable int eventId, @RequestBody EventCreateDTO updatedEvent) {
         logger.debug("Вход в updateEvent()");
         logger.debug("Входные параметры eventId {}, updatedEvent {}", eventId, updatedEvent);
 
@@ -149,6 +150,7 @@ public class EventController {
         notificationService.triggerNotificationService(event, TriggerFlags.MODIFY);
 
         logger.debug("Обновленный event {}", event );
+        return event;
     }
 
     @ApiOperation(value = "allows delete event")
