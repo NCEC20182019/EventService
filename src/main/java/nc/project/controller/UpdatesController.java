@@ -95,7 +95,7 @@ select events.*
             if(e.getLastUpdatingDate() == null) {tmp.add(e); break;}
             for (EventUpdate eu : updates)
                 if (eu.isReadyForUpdate(e, tmp, date)) tmp.add(e);
-            if(tmp.size() >= 1) break;//размер батча 2
+            if(tmp.size() >= 1) break;//размер батча 1
         }
 
 
