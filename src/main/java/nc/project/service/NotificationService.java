@@ -54,7 +54,9 @@ public class NotificationService {
                     .accept(MediaType.APPLICATION_JSON)
                     .attributes(ServerOAuth2AuthorizedClientExchangeFilterFunction
                             .clientRegistrationId("event"))
-                    .retrieve().bodyToMono(Object.class).block();
+                    .retrieve()
+                    .bodyToMono(Object.class)
+                    .subscribe();
         }catch (Exception ex) //TODO найти какой тут эксепшен кидается
         {
             logger.debug(ex.getMessage());
