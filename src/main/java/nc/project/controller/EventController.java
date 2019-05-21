@@ -13,8 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/events", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -132,7 +129,7 @@ public class EventController {
         Location location = new Location(newEvent.getName_location(), newEvent.getLatitude(), newEvent.getLongitude());
         event = eventService.createEvent(modelMapper.map(newEvent, Event.class), location);
 
-        notificationService.triggerNotificationService(event, TriggerFlags.CREATE);
+        notificationService.triggerNotificationService(event, TriggerFlag.CREATE);
 
         logger.debug("Создан event {}", event);
         return event;
@@ -147,7 +144,7 @@ public class EventController {
         Location location = new Location(updatedEvent.getName_location(), updatedEvent.getLatitude(), updatedEvent.getLongitude());
         event = eventService.updateEvent(eventId, modelMapper.map(updatedEvent, Event.class), location);
 
-        notificationService.triggerNotificationService(event, TriggerFlags.MODIFY);
+        notificationService.triggerNotificationService(event, TriggerFlag.MODIFY);
 
         logger.debug("Обновленный event {}", event );
         return event;
@@ -161,7 +158,7 @@ public class EventController {
 
         eventService.deleteEvent(eventId);
 
-        notificationService.triggerNotificationService(new Event(eventId), TriggerFlags.DELETE);
+        notificationService.triggerNotificationService(new Event(eventId), TriggerFlag.DELETE);
 
         logger.debug("Выход из deleteEvent()");
     }

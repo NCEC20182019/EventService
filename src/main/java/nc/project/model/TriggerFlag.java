@@ -1,6 +1,6 @@
 package nc.project.model;
 
-public enum TriggerFlags {
+public enum TriggerFlag {
     CREATE,
     DELETE,
     MODIFY
