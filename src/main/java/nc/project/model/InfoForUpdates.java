@@ -59,4 +59,15 @@ public class InfoForUpdates {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "InfoForUpdates{" +
+                "event_id=" + event_id +
+                ", title='" + title + '\'' +
+                ", date_start=" + date_start +
+                ", date_end=" + date_end +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
