@@ -48,8 +48,8 @@ public class NotificationService {
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .headers(h -> h.setBearerAuth(ftoken))
                     .accept(MediaType.APPLICATION_JSON)
-                    .attributes(ServerOAuth2AuthorizedClientExchangeFilterFunction
-                            .clientRegistrationId("event"))
+                    //.attributes(ServerOAuth2AuthorizedClientExchangeFilterFunction
+                    //      .clientRegistrationId("event"))
                     .retrieve()
                     .bodyToMono(Object.class)
                     .subscribe();
