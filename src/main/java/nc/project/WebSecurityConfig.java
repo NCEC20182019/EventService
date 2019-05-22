@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 @Configuration
-@Order(99)
+@Order(4)
 public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
 
     @Override
