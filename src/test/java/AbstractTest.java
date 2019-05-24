@@ -2,7 +2,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nc.project.Application;
+import nc.project.EventApplication;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = EventApplication.class)
 @WebAppConfiguration
 public abstract class AbstractTest {
     protected MockMvc mvc;
