@@ -10,14 +10,15 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 @Configuration
-@Order(4)
-public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
+public class ResourceSecurityConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/events/sort, /events/types, /events/create," +
+                .antMatchers("/updates/by_event")
+                .permitAll()
+                .antMatchers("/events/create," +
                         " /events/update/{eventId:\\d+}, /events/delete/{eventId:\\d+}, /updates/**")
                 .authenticated()
                 .anyRequest()
