@@ -125,13 +125,20 @@ public class EventController {
     public Event createEvent(@RequestBody EventCreateDTO newEvent) {
         logger.debug("Вход в createEvent()");
         logger.debug("Входной параметр newEvent {}", newEvent);
-
         Location location = new Location(newEvent.getName_location(), newEvent.getLatitude(), newEvent.getLongitude());
-        event = eventService.createEvent(modelMapper.map(newEvent, Event.class), location);
+        ArrayList<Event> eventsFromDb = eventService.getEventsByTitleAndSourceUrl(newEvent.getTitle(),newEvent.getSource_uri());
+        if(eventsFromDb.size() == 0) {
+            event = eventService.createEvent(modelMapper.map(newEvent, Event.class), location, newEvent.getSource_uri());
+            notificationService.triggerNotificationService(event, TriggerFlag.CREATE);
+            logger.debug("Создан event {}", event);
+        }else {
+            for (Event e : eventsFromDb) {
+                event = eventService.updateEvent(e.getId(), modelMapper.map(newEvent, Event.class), location);
+                notificationService.triggerNotificationService(event, TriggerFlag.MODIFY);
+                logger.debug("Обновленный event {}", event);
+            }
+        }
 
-        notificationService.triggerNotificationService(event, TriggerFlag.CREATE);
-
-        logger.debug("Создан event {}", event);
         return event;
     }
 

@@ -21,16 +21,17 @@ public class EventUpdate {
     @JsonIgnore
     private Event event;
 
-    private String url_to_tweet;
+    @Column(name = "url_to_tweet")
+    private String urlToTweet;
     private String text_from_tweet;
     private String url_to_pic_from_tweet;
     private Date last_update_date;
     public EventUpdate(){}
 
-    public EventUpdate(Event event, String url_to_tweet, String text_from_tweet,
+    public EventUpdate(Event event, String urlToTweet, String text_from_tweet,
                        String url_to_pic_from_tweet, Date last_update_date) {
         this.event = event;
-        this.url_to_tweet = url_to_tweet;
+        this.urlToTweet = urlToTweet;
         this.text_from_tweet = text_from_tweet;
         this.url_to_pic_from_tweet = url_to_pic_from_tweet;
         this.last_update_date = last_update_date;
@@ -53,11 +54,11 @@ public class EventUpdate {
     }
 
     public String getUrl_to_tweet() {
-        return url_to_tweet;
+        return urlToTweet;
     }
 
-    public void setUrl_to_tweet(String url_to_tweet) {
-        this.url_to_tweet = url_to_tweet;
+    public void setUrl_to_tweet(String urlToTweet) {
+        this.urlToTweet = urlToTweet;
     }
 
     public String getText_from_tweet() {
@@ -98,7 +99,7 @@ public class EventUpdate {
         return "EventUpdate{" +
                 "id=" + id +
                 ", event_id=" + event +
-                ", urlToTweet='" + url_to_tweet + '\'' +
+                ", urlToTweet='" + urlToTweet + '\'' +
                 ", text_from_tweet='" + text_from_tweet + '\'' +
                 ", url_to_pic_from_tweet='" + url_to_pic_from_tweet + '\'' +
                 ", last_update_date=" + last_update_date +

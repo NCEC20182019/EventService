@@ -2,6 +2,8 @@ package nc.project.service;
 
 import nc.project.model.Event;
 import nc.project.model.EventUpdate;
+import nc.project.model.InfoForUpdates;
+import nc.project.repository.EventRepository;
 import nc.project.repository.UpdatesRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import java.util.List;
 public class EventUpdateServiceImpl implements EventUpdateService {
     private UpdatesRepository updatesRep;
     private EventService eventService;
+    private EventRepository eventRepository;
 
     @Autowired
     public EventUpdateServiceImpl(UpdatesRepository updatesRep, EventService eventService) {
@@ -58,6 +61,11 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     @Override
     public void deleteEventUpdate(int eventUpdateId) {
         updatesRep.deleteById(eventUpdateId);
+    }
+
+    @Override
+    public ArrayList<EventUpdate> getByEventAndTwitterUrl(String urlToTweet, Event event) {
+        return updatesRep.findEventUpdateByUrlToTweetAndEvent(urlToTweet, event);
     }
 
 

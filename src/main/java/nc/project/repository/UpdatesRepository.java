@@ -12,4 +12,5 @@ import java.util.List;
 public interface UpdatesRepository extends CrudRepository<EventUpdate, Integer> {
     EventUpdate findById (int update_id);
     ArrayList<EventUpdate> findByEvent(Event event_id);
+    ArrayList<EventUpdate> findEventUpdateByUrlToTweetAndEvent(String url_to_tweet, Event event_id);
 }

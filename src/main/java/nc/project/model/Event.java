@@ -22,8 +22,10 @@ public class Event{
     private Date dateStart;
     @Column(name = "date_end")
     private Date dateEnd;
-    private String source_uri;
-    private String type;
+    @Column(name = "source_uri")
+    private String sourceUri;
+    @Column(name = "type")
+    private String typeOfEvent;
     private String image_url;
     @Column(name = "owner_id")
     private Integer ownerId;
@@ -44,13 +46,13 @@ public class Event{
         this.id = id;
     }
     public Event(String title, String description, Date dateStart,
-                 Date dateEnd, String source_uri, String type, String image_url, int ownerId){
+                 Date dateEnd, String sourceUri, String typeOfEvent, String image_url, int ownerId){
       this.title = title;
       this.description = description;
       this.dateStart = dateStart;
       this.dateEnd = dateEnd;
-      this.source_uri = source_uri;
-      this.type = type;
+      this.sourceUri = sourceUri;
+      this.typeOfEvent = typeOfEvent;
       this.image_url = image_url;
       this.ownerId = ownerId;
       localizations = new ArrayList<>();
@@ -117,12 +119,12 @@ public class Event{
       this.dateEnd = dateEnd;
     }
 
-    public String getSource_uri() {
-      return source_uri;
+    public String getSourceUri() {
+      return sourceUri;
     }
 
-    public void setSource_uri(String source_uri) {
-      this.source_uri = source_uri;
+    public void setSourceUri(String sourceUri) {
+      this.sourceUri = sourceUri;
     }
 
     public Location getLocation() {
@@ -141,12 +143,12 @@ public class Event{
         this.localizations = localizations;
     }
 
-    public String getType() {
-        return type;
+    public String getTypeOfEvent() {
+        return typeOfEvent;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeOfEvent(String typeOfEvent) {
+        this.typeOfEvent = typeOfEvent;
     }
 
     public Integer getOwnerId() {
@@ -170,8 +172,8 @@ public class Event{
         if (description != null ? !description.equals(event.description) : event.description != null) return false;
         if (dateStart != null ? !dateStart.equals(event.dateStart) : event.dateStart != null) return false;
         if (dateEnd != null ? !dateEnd.equals(event.dateEnd) : event.dateEnd != null) return false;
-        if (source_uri != null ? !source_uri.equals(event.source_uri) : event.source_uri != null) return false;
-        if (type != null ? !type.equals(event.type) : event.type != null) return false;
+        if (sourceUri != null ? !sourceUri.equals(event.sourceUri) : event.sourceUri != null) return false;
+        if (typeOfEvent != null ? !typeOfEvent.equals(event.typeOfEvent) : event.typeOfEvent != null) return false;
         if (image_url != null ? !image_url.equals(event.image_url) : event.image_url != null) return false;
         if (location != null ? !location.equals(event.location) : event.location != null) return false;
         return localizations != null ? localizations.equals(event.localizations) : event.localizations == null;
@@ -186,8 +188,8 @@ public class Event{
                 ", description='" + description + '\'' +
                 ", dateStart=" + dateStart +
                 ", dateEnd=" + dateEnd +
-                ", source_uri='" + source_uri + '\'' +
-                ", type='" + type + '\'' +
+                ", sourceUri='" + sourceUri + '\'' +
+                ", type='" + typeOfEvent + '\'' +
                 ", image_url='" + image_url + '\'' +
                 ", ownerId=" + ownerId +
                 ", lastUpdatingDate=" + lastUpdatingDate +

@@ -41,7 +41,7 @@ public class NotificationService {
                     .body(BodyInserters.fromObject(new TriggerDTO(
                             event.getId(),
                             triggerFlag,
-                            event.getType(),
+                            event.getTypeOfEvent(),
                             event.getLocation().getLatitude(),
                             event.getLocation().getLongitude()
                     )))

@@ -2,6 +2,7 @@ package nc.project.service;
 
 import nc.project.model.Event;
 import nc.project.model.EventUpdate;
+import nc.project.model.InfoForUpdates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,4 +14,7 @@ public interface EventUpdateService {
     EventUpdate createEventUpdate(EventUpdate newUpdate, Event event);
     EventUpdate updateEventUpdate(int eventUpdateId, EventUpdate updatedEventUpdate, Event event);
     void deleteEventUpdate(int eventUpdateId);
+    ArrayList<EventUpdate> getByEventAndTwitterUrl(String urlToTweet, Event event);
+
+
 }

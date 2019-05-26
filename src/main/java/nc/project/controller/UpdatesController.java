@@ -24,6 +24,8 @@ import java.util.function.Consumer;
 @CrossOrigin
 public class UpdatesController {
 
+    private final static int SIZE_OF_BATCH = 1;
+
     private final EventUpdateService eventUpdateService;
     private final ModelMapper modelMapper = new ModelMapper();
     private EventUpdate eventUpdate;
@@ -53,10 +55,10 @@ public class UpdatesController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void createUpdate(@RequestBody EventUpdateCreateDTO newUpdate){
         Event event = eventService.getById(newUpdate.getEvent_id());
-        ArrayList<EventUpdate> updatesFromDb = eventUpdateService.getByEvent(event);
-        if (updatesFromDb.size() == 0){
+        ArrayList<EventUpdate> updatesFromDb = eventUpdateService.getByEventAndTwitterUrl(newUpdate.getUrl_to_tweet(), event);
+        if(updatesFromDb.size() == 0){
         eventUpdate = eventUpdateService.createEventUpdate(modelMapper.map(newUpdate, EventUpdate.class), event);
-        logger.debug("Создан update {}", eventUpdate);
+        logger.debug("Создан update {}" + eventUpdate);
         } else {
             for (EventUpdate eu : updatesFromDb){
                 eventUpdateService.updateEventUpdate(eu.getId(), modelMapper.map(newUpdate, EventUpdate.class),event);
@@ -67,47 +69,32 @@ public class UpdatesController {
     }
 
 
-
-    @RequestMapping(value = "/batch", method = RequestMethod.GET)
-    public ArrayList<InfoForUpdates> getBatch(){
-        Date date = new Date();
-        date.setHours(0);
-        date.setMinutes(0);
-
-        ArrayList<InfoForUpdates> eventsForUpdate = new ArrayList<>();
-//TODO заменить на запросы в БД
-        List<Event> events = eventService.getAll();
-        ArrayList<Event> tmp = new ArrayList<>();
-
-        List<EventUpdate> updates = eventUpdateService.getAll();
-/*
-Вместо
-select events.*
+    /*
+    select events.*
     from events LEFT JOIN event_updates
         ON events.event_id = event_updates.event_id
-      WHERE event_updates.last_update_date < date_trunc('day',current_timestamp)
-      AND
-      --протестировать
-      (events.last_updating_date IS NULL OR events.last_updating_date < date_trunc('day',current_timestamp))
-      ;
- */
-        for(Event e : events){
-            if(e.getLastUpdatingDate() == null) {tmp.add(e); break;}
-            for (EventUpdate eu : updates)
-                if (eu.isReadyForUpdate(e, tmp, date)) tmp.add(e);
-            if(tmp.size() >= 1) break;//размер батча 1
-        }
+    WHERE (event_updates.last_update_date < date_trunc('day',current_timestamp) OR event_updates.last_update_date IS NULL)
+          AND
+          (events.last_updating_date IS NULL OR events.last_updating_date < date_trunc('day',current_timestamp))
+    ;
+     */
+    @RequestMapping(value = "/batch", method = RequestMethod.GET)
+    public ArrayList<InfoForUpdates> getBatch(){
 
 
-        for (Event e : tmp){
-            e.setLastUpdatingDate(new Date());
-            eventService.updateEvent(e.getId(), e, e.getLocation());
-            eventsForUpdate.add(new InfoForUpdates(e.getId(),e.getTitle(),e.getDateStart(),e.getDateEnd(),e.getType()));
+        ArrayList<Event> batchData = eventService.getBatchData();
+        ArrayList<InfoForUpdates> eventsForUpdate = new ArrayList<>();
+
+
+
+        for(int i = 0; i < SIZE_OF_BATCH; i++){
+            batchData.get(i).setLastUpdatingDate(new Date());
+            eventService.updateEvent(batchData.get(i).getId(), batchData.get(i), batchData.get(i).getLocation());
+            eventsForUpdate.add(new InfoForUpdates(batchData.get(i).getId(),batchData.get(i).getTitle(),batchData.get(i).getDateStart(),batchData.get(i).getDateEnd(),batchData.get(i).getTypeOfEvent()));
         }
 
         if(eventsForUpdate.size() > 0){
-            logger.debug("Batch создан ", eventsForUpdate.get(0));
-            System.out.println(eventsForUpdate.get(0) + " " + eventsForUpdate.size());
+            logger.debug("Batch создан " + eventsForUpdate.get(0));
         }
         return eventsForUpdate;
     }
