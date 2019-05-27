@@ -24,8 +24,7 @@ public class Event{
     private Date dateEnd;
     @Column(name = "source_uri")
     private String sourceUri;
-    @Column(name = "type")
-    private String typeOfEvent;
+    private String type;
     private String image_url;
     @Column(name = "owner_id")
     private Integer ownerId;
@@ -46,13 +45,13 @@ public class Event{
         this.id = id;
     }
     public Event(String title, String description, Date dateStart,
-                 Date dateEnd, String sourceUri, String typeOfEvent, String image_url, int ownerId){
+                 Date dateEnd, String sourceUri, String type, String image_url, int ownerId) {
       this.title = title;
       this.description = description;
       this.dateStart = dateStart;
       this.dateEnd = dateEnd;
       this.sourceUri = sourceUri;
-      this.typeOfEvent = typeOfEvent;
+        this.type = type;
       this.image_url = image_url;
       this.ownerId = ownerId;
       localizations = new ArrayList<>();
@@ -143,12 +142,12 @@ public class Event{
         this.localizations = localizations;
     }
 
-    public String getTypeOfEvent() {
-        return typeOfEvent;
+    public String getType() {
+        return type;
     }
 
-    public void setTypeOfEvent(String typeOfEvent) {
-        this.typeOfEvent = typeOfEvent;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Integer getOwnerId() {
@@ -173,7 +172,7 @@ public class Event{
         if (dateStart != null ? !dateStart.equals(event.dateStart) : event.dateStart != null) return false;
         if (dateEnd != null ? !dateEnd.equals(event.dateEnd) : event.dateEnd != null) return false;
         if (sourceUri != null ? !sourceUri.equals(event.sourceUri) : event.sourceUri != null) return false;
-        if (typeOfEvent != null ? !typeOfEvent.equals(event.typeOfEvent) : event.typeOfEvent != null) return false;
+        if (type != null ? !type.equals(event.type) : event.type != null) return false;
         if (image_url != null ? !image_url.equals(event.image_url) : event.image_url != null) return false;
         if (location != null ? !location.equals(event.location) : event.location != null) return false;
         return localizations != null ? localizations.equals(event.localizations) : event.localizations == null;
@@ -189,7 +188,7 @@ public class Event{
                 ", dateStart=" + dateStart +
                 ", dateEnd=" + dateEnd +
                 ", sourceUri='" + sourceUri + '\'' +
-                ", type='" + typeOfEvent + '\'' +
+                ", type='" + type + '\'' +
                 ", image_url='" + image_url + '\'' +
                 ", ownerId=" + ownerId +
                 ", lastUpdatingDate=" + lastUpdatingDate +

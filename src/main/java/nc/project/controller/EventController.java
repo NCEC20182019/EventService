@@ -10,6 +10,7 @@ import nc.project.model.dto.EventGetDTO;
 import nc.project.service.EventService;
 import nc.project.service.NotificationService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,26 @@ public class EventController {
         this.eventService = eventService;
         this.notificationService = notificationService;
         event = null;
+        modelMapper.addMappings(new PropertyMap<Event, EventGetDTO>() {
+            protected void configure() {
+                map().setDate_start(source.getDateStart());
+                map().setDate_end(source.getDateEnd());
+                map().setSource_uri(source.getSourceUri());
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<EventCreateDTO, Event>() {
+            protected void configure() {
+                map().setDateStart(source.getDate_start());
+                map().setDateEnd(source.getDate_end());
+                map().setSourceUri(source.getSource_uri());
+            }
+        });
     }
-    /*private PropertyMap<Event, EventCreateDTO> skipFieldsMap = new PropertyMap<Event, EventCreateDTO>() {
-        protected void configure() {
-            skip().getName_location();
-        }
-    };*/
+//    private PropertyMap<Event, EventCreateDTO> skipFieldsMap = new PropertyMap<Event, EventCreateDTO>() {
+//        protected void configure() {
+//            skip().getName_location();
+//        }
+//    };
 
     @ApiOperation(value = "get all events", response = EventGetDTO.class, responseContainer = "List")
     @ApiResponses(value = {
@@ -122,13 +137,13 @@ public class EventController {
 
     @ApiOperation(value = "create new event", response = Event.class)
     @PostMapping(value = "/create")
-    public Event createEvent(@RequestBody EventCreateDTO newEvent) {
+    public EventGetDTO createEvent(@RequestBody EventCreateDTO newEvent) {
         logger.debug("Вход в createEvent()");
         logger.debug("Входной параметр newEvent {}", newEvent);
         Location location = new Location(newEvent.getName_location(), newEvent.getLatitude(), newEvent.getLongitude());
         ArrayList<Event> eventsFromDb = eventService.getEventsByTitleAndSourceUrl(newEvent.getTitle(),newEvent.getSource_uri());
         if(eventsFromDb.size() == 0) {
-            event = eventService.createEvent(modelMapper.map(newEvent, Event.class), location, newEvent.getSource_uri());
+            event = eventService.createEvent(modelMapper.map(newEvent, Event.class), location);
             notificationService.triggerNotificationService(event, TriggerFlag.CREATE);
             logger.debug("Создан event {}", event);
         }else {
@@ -139,12 +154,12 @@ public class EventController {
             }
         }
 
-        return event;
+        return modelMapper.map(event, EventGetDTO.class);
     }
 
     @ApiOperation(value = "allows update event", response = Event.class)
     @PutMapping(value = "/update/{eventId:\\d+}")
-    public Event updateEvent(@PathVariable int eventId, @RequestBody EventCreateDTO updatedEvent) {
+    public EventGetDTO updateEvent(@PathVariable int eventId, @RequestBody EventCreateDTO updatedEvent) {
         logger.debug("Вход в updateEvent()");
         logger.debug("Входные параметры eventId {}, updatedEvent {}", eventId, updatedEvent);
 
@@ -154,7 +169,7 @@ public class EventController {
         notificationService.triggerNotificationService(event, TriggerFlag.MODIFY);
 
         logger.debug("Обновленный event {}", event );
-        return event;
+        return modelMapper.map(event, EventGetDTO.class);
     }
 
     @ApiOperation(value = "allows delete event")
@@ -163,9 +178,10 @@ public class EventController {
         logger.debug("Вход в deleteEvent()");
         logger.debug("Входной пареаметр eventId {}", eventId);
 
+        Event event = eventService.getById(eventId);
         eventService.deleteEvent(eventId);
 
-        notificationService.triggerNotificationService(new Event(eventId), TriggerFlag.DELETE);
+        notificationService.triggerNotificationService(event, TriggerFlag.DELETE);
 
         logger.debug("Выход из deleteEvent()");
     }

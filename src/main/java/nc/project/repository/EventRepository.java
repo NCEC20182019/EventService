@@ -1,9 +1,7 @@
 package nc.project.repository;
 
 import nc.project.model.Event;
-import nc.project.model.Location;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,7 +14,7 @@ import java.util.List;
 public interface EventRepository extends PagingAndSortingRepository<Event, Integer> {
   Event findById(int event_id);
 
-  List<Event> findAllByTypeOfEventIn(List<String> types);
+    List<Event> findAllByTypeIn(List<String> types);
 
   List<Event> findAllByDateStartGreaterThanAndDateEndLessThan(Date start, Date end);
 

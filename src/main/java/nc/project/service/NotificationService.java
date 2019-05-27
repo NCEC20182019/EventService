@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
-
 @Service
 public class NotificationService {
 
@@ -41,7 +39,7 @@ public class NotificationService {
                     .body(BodyInserters.fromObject(new TriggerDTO(
                             event.getId(),
                             triggerFlag,
-                            event.getTypeOfEvent(),
+                            event.getType(),
                             event.getLocation().getLatitude(),
                             event.getLocation().getLongitude()
                     )))

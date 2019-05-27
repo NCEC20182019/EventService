@@ -90,7 +90,7 @@ public class UpdatesController {
         for(int i = 0; i < SIZE_OF_BATCH; i++){
             batchData.get(i).setLastUpdatingDate(new Date());
             eventService.updateEvent(batchData.get(i).getId(), batchData.get(i), batchData.get(i).getLocation());
-            eventsForUpdate.add(new InfoForUpdates(batchData.get(i).getId(),batchData.get(i).getTitle(),batchData.get(i).getDateStart(),batchData.get(i).getDateEnd(),batchData.get(i).getTypeOfEvent()));
+            eventsForUpdate.add(new InfoForUpdates(batchData.get(i).getId(), batchData.get(i).getTitle(), batchData.get(i).getDateStart(), batchData.get(i).getDateEnd(), batchData.get(i).getType()));
         }
 
         if(eventsForUpdate.size() > 0){

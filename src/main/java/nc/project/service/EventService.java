@@ -1,9 +1,10 @@
 package nc.project.service;
 
-import nc.project.model.*;
+import nc.project.model.Event;
+import nc.project.model.Location;
+import nc.project.model.SortingAndFilteringParams;
+import nc.project.model.Type;
 import nc.project.model.dto.EventGetDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,9 @@ public interface EventService {
     List<Event> getAll();
     //сорь за костыль с source_uri, но я хз куда он делся. То ли @Column(name = "source_uri") не работает
     //то ли я зафейлился где-то
-    Event createEvent(Event newEvent, Location location, String source_uri);
+
+    // я починил
+    Event createEvent(Event newEvent, Location location);
     Event updateEvent(int eventId,Event updatedEvent, Location location);
     void deleteEvent(int eventId);
 

@@ -16,7 +16,7 @@ public class EventGetDTO {
     private Date date_start;
     private Date date_end;
     private String source_uri;
-    private String typeOfEvent;
+    private String type;
     private String image_url;
 
     private LocationGetDTO location;
@@ -26,14 +26,14 @@ public class EventGetDTO {
     public EventGetDTO(){}
 
     public EventGetDTO(int id, String title, String description, Date date_start, Date date_end, String source_uri,
-                       String typeOfEvent, String image_url, int owner_id) {
+                       String type, String image_url, int owner_id) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.date_start = date_start;
         this.date_end = date_end;
         this.source_uri = source_uri;
-        this.typeOfEvent = typeOfEvent;
+        this.type = type;
         this.image_url = image_url;
         this.owner_id = owner_id;
         this.location = new LocationGetDTO();
@@ -112,12 +112,12 @@ public class EventGetDTO {
         this.localizations = localizations;
     }
 
-    public String getTypeOfEvent() {
-        return typeOfEvent;
+    public String getType() {
+        return type;
     }
 
-    public void setTypeOfEvent(String typeOfEvent) {
-        this.typeOfEvent = typeOfEvent;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Integer getOwner_id() {
@@ -151,7 +151,7 @@ public class EventGetDTO {
                 ", date_start=" + date_start +
                 ", date_end=" + date_end +
                 ", source_uri='" + source_uri + '\'' +
-                ", typeOfEvent='" + typeOfEvent + '\'' +
+                ", type='" + type + '\'' +
                 ", image_url='" + image_url + '\'' +
                 ", location=" + location +
                 ", localizations=" + localizations +

@@ -16,7 +16,7 @@ public class EventCreateDTO {
     private Date date_start;
     private Date date_end;
     private String source_uri;
-    private String typeOfEvent;
+    private String type;
     private String image_url;
 
     private String name_location;
