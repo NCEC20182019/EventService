@@ -1,8 +1,8 @@
 package nc.project.service;
 
 import nc.project.model.Event;
+import nc.project.model.FilterParams;
 import nc.project.model.Location;
-import nc.project.model.SortingAndFilteringParams;
 import nc.project.model.Type;
 import nc.project.model.dto.EventGetDTO;
 import nc.project.repository.EventRepository;
@@ -82,22 +82,22 @@ public class EventServiceImpl implements EventService {
   }
 
   @Override
-  public List<EventGetDTO> sortAndFilter(SortingAndFilteringParams params) {
+  public List<EventGetDTO> filter(FilterParams params) {
     Set<EventGetDTO> eventSet = new HashSet<>();
-    if (params.getFilter().isTypeFilter()) {
-        eventRepo.findAllByTypeIn(params.getFilter().getTypes()).forEach(e -> eventSet.add(modelMapper.map(e, EventGetDTO.class)));
+    if (params.isTypeFilter()) {
+      eventRepo.findAllByTypeIn(params.getTypes()).forEach(e -> eventSet.add(modelMapper.map(e, EventGetDTO.class)));
     }
-    if (params.getFilter().isDateFilter()) {
+    if (params.isDateFilter()) {
       eventRepo.findAllByDateStartGreaterThanAndDateEndLessThan(
-              params.getFilter().getDateFrom(), params.getFilter().getDateTo()).forEach(
+              params.getDateFrom(), params.getDateTo()).forEach(
               e -> eventSet.add(modelMapper.map(e, EventGetDTO.class))
       );
     }
-    if (params.getFilter().isAreaFilter()) {
-      eventRepo.findAllByAreaSorting(
-              params.getFilter().getArea().getCenter().getLatitude(),
-              params.getFilter().getArea().getCenter().getLongitude(),
-              params.getFilter().getArea().getRadius()).forEach(
+    if (params.isAreaFilter()) {
+      eventRepo.findAllByAreaFilter(
+              params.getArea().getCenter().getLatitude(),
+              params.getArea().getCenter().getLongitude(),
+              params.getArea().getRadius()).forEach(
               e -> eventSet.add(modelMapper.map(e, EventGetDTO.class))
       );
     }

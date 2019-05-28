@@ -5,9 +5,7 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 @Data
-public class SortingAndFilteringParams {
-  @Data
-  public class Filter {
+public class FilterParams {
     @Data
     public class Area {
       private Location center;
@@ -27,13 +25,5 @@ public class SortingAndFilteringParams {
     public boolean isTypeFilter() {
       return types.size() > 0;
     }
-
-  }
-  private int sort;
-  private Filter filter;
-
-  public boolean isFilter(){
-    return filter != null;
-  }
 }
 

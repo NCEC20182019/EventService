@@ -1,8 +1,8 @@
 package nc.project.service;
 
 import nc.project.model.Event;
+import nc.project.model.FilterParams;
 import nc.project.model.Location;
-import nc.project.model.SortingAndFilteringParams;
 import nc.project.model.Type;
 import nc.project.model.dto.EventGetDTO;
 
@@ -22,7 +22,7 @@ public interface EventService {
 
     List<Type> getAllTypes();
 
-    List<EventGetDTO> sortAndFilter(SortingAndFilteringParams params);
+    List<EventGetDTO> filter(FilterParams params);
 
     ArrayList<Event> getBatchData();
     ArrayList<Event> getEventsByTitleAndSourceUrl(String title, String sourceUri);

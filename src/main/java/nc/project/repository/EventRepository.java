@@ -22,9 +22,9 @@ public interface EventRepository extends PagingAndSortingRepository<Event, Integ
           "join locations l on " +
           "l.location_id = s.location_id " +
           "where (point(:lat,:lng) <@ circle(point(l.latitude,l.longitude),:radius))", nativeQuery = true)
-  List<Event> findAllByAreaSorting(@Param("lat") double lat,
-                                   @Param("lng") double lng,
-                                   @Param("radius") double radius);
+  List<Event> findAllByAreaFilter(@Param("lat") double lat,
+                                  @Param("lng") double lng,
+                                  @Param("radius") double radius);
   @Query(value = "select events.*\n" +
           "from events LEFT JOIN event_updates\n" +
           "    ON events.event_id = event_updates.event_id\n" +
@@ -32,5 +32,6 @@ public interface EventRepository extends PagingAndSortingRepository<Event, Integ
           "      AND\n" +
           "      (events.last_updating_date IS NULL OR events.last_updating_date < date_trunc('day',current_timestamp))", nativeQuery = true)
   ArrayList<Event> getDataForBatch();
-  ArrayList<Event> findEventsByTitleAndSourceUri(String title, String sourceUri);
+
+    ArrayList<Event> findEventsByTitleAndSourceUri(String title, String sourceUri);
 }

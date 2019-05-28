@@ -103,16 +103,12 @@ public class EventController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
             @ApiResponse(code = 404, message = "Events not found")
     })
-    @PostMapping(value = "/sort")
+    @PostMapping(value = "/filter")
     @ResponseBody
-    public ResponseEntity<List<EventGetDTO>> getSortedAndFiltered(@RequestBody SortingAndFilteringParams params) {
+    public ResponseEntity<List<EventGetDTO>> getFiltered(@RequestBody FilterParams params) {
         logger.debug("Вход в SortedAndFiltered()");
 
-
-        if (!params.isFilter())
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        List<EventGetDTO> response = eventService.sortAndFilter(params);
+        List<EventGetDTO> response = eventService.filter(params);
 
         logger.debug("Возвращается {} размером {}", response.getClass().getTypeName(), response.size());
         return new ResponseEntity<>(response, HttpStatus.OK);
