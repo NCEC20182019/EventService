@@ -4,10 +4,10 @@ import nc.project.model.Event;
 import nc.project.model.FilterParams;
 import nc.project.model.Location;
 import nc.project.model.Type;
-import nc.project.model.dto.EventGetDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public interface EventService {
     Event getById(int eventId);
@@ -22,7 +22,7 @@ public interface EventService {
 
     List<Type> getAllTypes();
 
-    List<EventGetDTO> filter(FilterParams params);
+    Set<Event> filter(FilterParams params);
 
     ArrayList<Event> getBatchData();
     ArrayList<Event> getEventsByTitleAndSourceUrl(String title, String sourceUri);

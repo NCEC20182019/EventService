@@ -30,19 +30,22 @@ public class NotificationService {
                 OAuth2AuthenticationDetails oAuth2AuthenticationDetails = (OAuth2AuthenticationDetails)details;
                 token = oAuth2AuthenticationDetails.getTokenValue();
             }
-
             final String ftoken = token;
+
+            TriggerDTO trigger = new TriggerDTO(
+                    event.getId(),
+                    triggerFlag,
+                    event.getType(),
+                    event.getLocation().getLatitude(),
+                    event.getLocation().getLongitude()
+            );
+
+            logger.debug("[triggerNotificationService] отправляется: {}", trigger);
 
             WebClient.create()
                     .post()
                     .uri(notificationUrl)
-                    .body(BodyInserters.fromObject(new TriggerDTO(
-                            event.getId(),
-                            triggerFlag,
-                            event.getType(),
-                            event.getLocation().getLatitude(),
-                            event.getLocation().getLongitude()
-                    )))
+                    .body(BodyInserters.fromObject(trigger))
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .headers(h -> h.setBearerAuth(ftoken))
                     .accept(MediaType.APPLICATION_JSON)
@@ -50,7 +53,10 @@ public class NotificationService {
                     //      .clientRegistrationId("event"))
                     .retrieve()
                     .bodyToMono(Object.class)
-                    .subscribe();
+                    .subscribe(s -> {
+                            },
+                            e -> logger.debug(e.getMessage()),
+                            () -> logger.debug("[triggerNotificationService] успешно отправлено!"));
         }catch (Exception ex) //TODO найти какой тут эксепшен кидается
         {
             logger.debug(ex.getMessage());

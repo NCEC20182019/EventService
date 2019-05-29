@@ -8,7 +8,8 @@ import java.util.List;
 public class FilterParams {
     @Data
     public class Area {
-      private Location center;
+        private float longitude;
+        private float latitude;
       private float radius;
     }
     private Date dateFrom;
@@ -17,13 +18,21 @@ public class FilterParams {
     private List<String> types;
 
     public boolean isAreaFilter(){
-      return area.getCenter() != null && area.getRadius() != 0;
+        return (area.getLatitude() != 0 && area.getLongitude() != 0) && area.getRadius() != 0;
+    }
+
+    public boolean isDateFromFilter() {
+        return dateFrom != null;
+    }
+
+    public boolean isDateToFilter() {
+        return dateTo != null;
     }
     public boolean isDateFilter() {
       return dateFrom != null && dateTo != null;
     }
     public boolean isTypeFilter() {
-      return types.size() > 0;
+        return types != null && types.size() > 0;
     }
 }
 

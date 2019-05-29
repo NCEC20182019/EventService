@@ -14,9 +14,7 @@ import org.modelmapper.PropertyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -55,11 +53,6 @@ public class EventController {
             }
         });
     }
-//    private PropertyMap<Event, EventCreateDTO> skipFieldsMap = new PropertyMap<Event, EventCreateDTO>() {
-//        protected void configure() {
-//            skip().getName_location();
-//        }
-//    };
 
     @ApiOperation(value = "get all events", response = EventGetDTO.class, responseContainer = "List")
     @ApiResponses(value = {
@@ -104,14 +97,15 @@ public class EventController {
             @ApiResponse(code = 404, message = "Events not found")
     })
     @PostMapping(value = "/filter")
-    @ResponseBody
-    public ResponseEntity<List<EventGetDTO>> getFiltered(@RequestBody FilterParams params) {
-        logger.debug("Вход в SortedAndFiltered()");
+    public List<EventGetDTO> getFiltered(@RequestBody FilterParams params) {
+        logger.debug("Вход в getFiltered()");
+        logger.debug(params.toString());
 
-        List<EventGetDTO> response = eventService.filter(params);
+        List<EventGetDTO> response = new ArrayList<>();
+        eventService.filter(params).forEach(e -> response.add(modelMapper.map(e, EventGetDTO.class)));
 
         logger.debug("Возвращается {} размером {}", response.getClass().getTypeName(), response.size());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return response;
     }
 
     @ApiOperation(value = "get all event types", response = Type.class)
@@ -179,6 +173,6 @@ public class EventController {
 
         notificationService.triggerNotificationService(event, TriggerFlag.DELETE);
 
-        logger.debug("Выход из deleteEvent()");
+        logger.debug("Удален {}", event);
     }
 }
